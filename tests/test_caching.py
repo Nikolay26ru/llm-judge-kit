@@ -65,3 +65,29 @@ def test_prebuilt_store_serves_without_calling_inner() -> None:
 
 def test_name_propagates_from_inner() -> None:
     assert CachingProvider(_Counter()).name == "counter"
+
+
+class _A(BaseProvider):
+    name = "x"
+    model = "m"
+
+    def complete(self, prompt: str, **kwargs: Any) -> ProviderResponse:
+        return ProviderResponse(text="A", model="m")
+
+
+class _B(BaseProvider):
+    name = "x"
+    model = "m"
+
+    def complete(self, prompt: str, **kwargs: Any) -> ProviderResponse:
+        return ProviderResponse(text="B", model="m")
+
+
+def test_distinct_provider_classes_do_not_collide_in_shared_store() -> None:
+    # Same name+model, different classes, one shared store: the provider class
+    # is part of the key, so B is not served A's cached response.
+    store: dict[str, ProviderResponse] = {}
+    a = CachingProvider(_A(), store=store)
+    b = CachingProvider(_B(), store=store)
+    assert a.complete("p").text == "A"
+    assert b.complete("p").text == "B"

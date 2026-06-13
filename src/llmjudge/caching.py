@@ -25,8 +25,12 @@ class CachingProvider(BaseProvider):
     Args:
         inner: The provider to wrap.
         store: Backing store mapping cache key -> response. Defaults to a new
-            in-memory dict; pass your own (e.g. a persistent mapping) to share
-            or persist the cache.
+            in-memory dict (per instance, so cross-provider collisions cannot
+            happen). If you SHARE one store across providers, they must be
+            equivalent: the key captures provider class + name + model + version
+            but not arbitrary per-instance config (e.g. a different ``base_url``
+            or a mock's ``fixed_score``), so distinct configs with the same
+            class/name/model would collide.
     """
 
     def __init__(
@@ -50,7 +54,10 @@ class CachingProvider(BaseProvider):
         return response
 
     def _key(self, prompt: str, kwargs: dict[str, Any]) -> str:
+        provider_cls = type(self.inner).__name__
         model = getattr(self.inner, "model", "")
         kwargs_repr = json.dumps(kwargs, sort_keys=True, default=repr)
-        payload = "\x00".join([__version__, self.name, str(model), prompt, kwargs_repr])
+        payload = "\x00".join(
+            [__version__, provider_cls, self.name, str(model), prompt, kwargs_repr]
+        )
         return hashlib.sha256(payload.encode("utf-8")).hexdigest()

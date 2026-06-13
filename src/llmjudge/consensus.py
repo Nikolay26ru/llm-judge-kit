@@ -64,8 +64,14 @@ class ConsensusJudge:
             aggregate_score = statistics.fmean(scores)
         else:
             aggregate_score = statistics.median(scores)
-        spread = statistics.pstdev(scores) if len(scores) > 1 else 0.0
-        confidence = max(0.0, min(1.0, 1.0 - 2.0 * spread))
+        if len(scores) > 1:
+            spread = statistics.pstdev(scores)
+            confidence = max(0.0, min(1.0, 1.0 - 2.0 * spread))
+        else:
+            # A single judge trivially "agrees" with itself, so there is no
+            # agreement signal — fall back to its own self-reported confidence.
+            spread = 0.0
+            confidence = results[0].confidence
 
         # A violation counts if a strict majority of members reported it.
         counts: Counter[str] = Counter(v for r in results for v in set(r.violations))

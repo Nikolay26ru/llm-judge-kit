@@ -5,8 +5,10 @@
     Judge(provider=RetryProvider(OpenAIProvider(...), retries=3, timeout=30))
 
 Retries are deterministic (the sleep function is injectable for tests). The
-timeout is enforced with a worker thread; on timeout the call is abandoned (the
-result is discarded) and retried like any other failure.
+timeout is enforced with a worker thread; because Python cannot cancel that
+thread, a timeout is **terminal** (not retried) so we never run two live calls
+at once — the timed-out call keeps running in the background but its result is
+discarded.
 """
 
 from __future__ import annotations
@@ -20,6 +22,10 @@ from typing import Any
 from llmjudge.errors import ProviderError
 from llmjudge.providers.base import BaseProvider, Provider
 from llmjudge.types import ProviderResponse
+
+
+class _Timeout(Exception):
+    """Internal marker that a call exceeded its timeout (never retried)."""
 
 
 class RetryProvider(BaseProvider):
@@ -54,11 +60,21 @@ class RetryProvider(BaseProvider):
         self._sleep = sleep
 
     def complete(self, prompt: str, **kwargs: Any) -> ProviderResponse:
-        """Call the inner provider, retrying on failure up to ``retries`` times."""
+        """Call the inner provider, retrying on failure up to ``retries`` times.
+
+        A timeout is **terminal**: it is not retried. Python cannot cancel the
+        worker thread running the slow call, so retrying on timeout would launch
+        a second live call while the first is still running. Raising
+        immediately keeps concurrency bounded to one in-flight call.
+        """
         last_exc: BaseException | None = None
         for attempt in range(self.retries + 1):
             try:
                 return self._call(prompt, **kwargs)
+            except _Timeout as exc:
+                raise ProviderError(
+                    f"provider {self.name!r} call exceeded {self.timeout}s"
+                ) from exc.__cause__
             except self.retry_on as exc:
                 last_exc = exc
                 if attempt >= self.retries:
@@ -76,8 +92,9 @@ class RetryProvider(BaseProvider):
         try:
             result = future.result(timeout=self.timeout)
         except FuturesTimeout as exc:
-            # Don't wait for the abandoned worker; just stop blocking on it.
+            # Stop blocking on the worker; it keeps running in the background
+            # (Python can't kill it) but we do not launch a concurrent retry.
             executor.shutdown(wait=False)
-            raise ProviderError(f"provider {self.name!r} call exceeded {self.timeout}s") from exc
+            raise _Timeout from exc
         executor.shutdown(wait=False)
         return result

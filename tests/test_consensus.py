@@ -36,10 +36,13 @@ def test_disagreement_lowers_confidence() -> None:
     assert result.confidence == pytest.approx(0.0)  # spread 0.5 -> 1 - 2*0.5
 
 
-def test_single_member_has_zero_spread() -> None:
+def test_single_member_uses_member_confidence() -> None:
+    # One judge has no agreement signal, so consensus reports the member's own
+    # confidence (the mock reports 0.9), not a spurious 1.0.
     result = ConsensusJudge([_judge(0.7)]).score("p", "r")
     assert result.score == pytest.approx(0.7)
-    assert result.confidence == pytest.approx(1.0)
+    assert result.confidence == pytest.approx(0.9)
+    assert result.metadata["spread"] == pytest.approx(0.0)
 
 
 def test_majority_violations_kept_minority_dropped() -> None:

@@ -31,7 +31,11 @@ class _Flaky(BaseProvider):
 class _Slow(BaseProvider):
     name = "slow"
 
+    def __init__(self) -> None:
+        self.calls = 0
+
     def complete(self, prompt: str, **kwargs: Any) -> ProviderResponse:
+        self.calls += 1
         time.sleep(0.05)
         return ProviderResponse(text="{}", model="slow")
 
@@ -73,5 +77,17 @@ def test_no_timeout_passthrough() -> None:
 
 def test_timeout_raises_provider_error() -> None:
     provider = RetryProvider(_Slow(), retries=0, timeout=0.01)
-    with pytest.raises(ProviderError):
+    with pytest.raises(ProviderError, match="exceeded"):
         provider.complete("p")
+
+
+def test_timeout_is_terminal_not_retried() -> None:
+    # A timeout must NOT spawn concurrent retries (Python can't cancel the
+    # running worker). With retries=3 the inner provider is still entered once.
+    delays: list[float] = []
+    inner = _Slow()
+    provider = RetryProvider(inner, retries=3, timeout=0.01, sleep=delays.append)
+    with pytest.raises(ProviderError, match="exceeded"):
+        provider.complete("p")
+    assert inner.calls == 1  # not 4
+    assert delays == []  # no backoff before a terminal timeout
