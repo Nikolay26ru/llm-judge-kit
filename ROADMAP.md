@@ -51,9 +51,10 @@ adopted core. Narrow and deep beats wide and shallow.
 - [x] README "Integrations" section
 
 ## M5 — Platform layer
-- [ ] CLI (`llmjudge eval` / `compare` / `report`)
-- [ ] reporting (JSON / Markdown / HTML)
-- [ ] minimal benchmark engine + dataset loader
+- [x] CLI (`llmjudge eval` / `compare` / `report`) — argparse, zero deps, `--fail-under` for CI
+- [x] reporting (JSON / Markdown / HTML), round-trips via `load_report`
+- [x] minimal benchmark engine (`run_benchmark` + `Report` stats) + dataset loader (`.jsonl`/`.json`)
+- [x] reporting kept separate from the engine (benchmark ⟂ reporting)
 
 ## Done / handoff
 - [ ] wheel builds

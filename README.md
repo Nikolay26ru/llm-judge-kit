@@ -185,6 +185,31 @@ register_provider("mine", lambda model: MyProvider())
 judge = Judge(provider="mine:v1", rubric="relevance")
 ```
 
+## CLI & batch evaluation
+
+Score a whole dataset and get a report — JSON, Markdown, or HTML. A dataset is
+JSON Lines (`prompt` + `response`, optional `context`/`reference`/`id`); see
+[`examples/sample_dataset.jsonl`](examples/sample_dataset.jsonl).
+
+```bash
+llmjudge eval cases.jsonl --provider openai:gpt-5 --rubric factuality --format md
+llmjudge eval cases.jsonl --fail-under 0.9            # exit non-zero in CI if pass rate drops
+llmjudge compare cases.jsonl --provider openai:gpt-5 --provider anthropic:claude-opus-4.8
+llmjudge report report.json --format html -o report.html
+```
+
+Same thing in code ([`examples/benchmark_report.py`](examples/benchmark_report.py)):
+
+```python
+from llmjudge import Judge, load_dataset, run_benchmark, render_markdown
+
+cases = load_dataset("cases.jsonl")
+judge = Judge(provider="openai:gpt-5", rubric="factuality")
+report = run_benchmark(judge, cases, provider="openai:gpt-5", rubric="factuality")
+print(report.pass_rate, report.mean_score)
+print(render_markdown(report))
+```
+
 ## Why depend on this
 
 - **Easy to depend on** — zero transitive deps in the core; provider SDKs are opt-in extras.

@@ -6,9 +6,8 @@ from types import SimpleNamespace
 
 import pytest
 
-from pytest_llmjudge import JudgeHelper, _format_failure, _resolve_provider
-
 from llmjudge import JudgeResult, MockProvider
+from pytest_llmjudge import JudgeHelper, _format_failure, _resolve_provider
 
 
 def test_judge_helper_resolves_string_provider() -> None:

@@ -56,6 +56,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - README "Integrations" section, including a framework-agnostic note (works
     with LangChain / LlamaIndex / any pipeline — it judges strings).
 
+- **Platform layer (M5):**
+  - `llmjudge` CLI (argparse, no new deps): `eval` (run a dataset → report,
+    with `--fail-under` for CI gating), `compare` (several providers side by
+    side), `report` (re-render a saved JSON report).
+  - Dataset loader (`load_dataset`, `Case`) for `.jsonl`/`.ndjson`/`.json`.
+  - Benchmark engine (`run_benchmark`, `Report` with count/passed/pass_rate/
+    mean_score), kept separate from reporting.
+  - Reporting (`render_json`/`render_markdown`/`render_html`, `load_report`) —
+    JSON round-trips back into a `Report`.
+
 ### Hardened (M1 adversarial review)
 - Trailing-comma JSON repair is now string-aware — it no longer corrupts string
   values that contain `,}` or `,]`.

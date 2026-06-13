@@ -37,3 +37,7 @@ class ProviderError(LLMJudgeError):
 
 class RubricError(LLMJudgeError):
     """Raised when a rubric is unknown or invalid."""
+
+
+class DatasetError(LLMJudgeError):
+    """Raised when an evaluation dataset cannot be loaded or is malformed."""

@@ -16,10 +16,13 @@ from __future__ import annotations
 
 from llmjudge._logging import enable_debug_logging, get_logger
 from llmjudge._version import __version__
+from llmjudge.benchmark import CaseResult, Report, run_benchmark
 from llmjudge.caching import CachingProvider
 from llmjudge.consensus import ConsensusJudge
+from llmjudge.dataset import Case, load_dataset
 from llmjudge.errors import (
     ConfigurationError,
+    DatasetError,
     LLMJudgeError,
     ParseError,
     ProviderError,
@@ -39,6 +42,12 @@ from llmjudge.providers import (
     register_provider,
 )
 from llmjudge.reliability import RetryProvider
+from llmjudge.reporting import (
+    load_report,
+    render_html,
+    render_json,
+    render_markdown,
+)
 from llmjudge.rubrics import (
     Rubric,
     available_rubrics,
@@ -51,8 +60,11 @@ __all__ = [
     "AnthropicProvider",
     "BaseProvider",
     "CachingProvider",
+    "Case",
+    "CaseResult",
     "ConfigurationError",
     "ConsensusJudge",
+    "DatasetError",
     "Judge",
     "JudgeResult",
     "LLMJudgeError",
@@ -63,6 +75,7 @@ __all__ = [
     "Provider",
     "ProviderError",
     "ProviderResponse",
+    "Report",
     "RetryProvider",
     "Rubric",
     "RubricError",
@@ -73,7 +86,13 @@ __all__ = [
     "extract_json",
     "get_logger",
     "get_rubric",
+    "load_dataset",
+    "load_report",
     "make_provider",
     "register_provider",
     "register_rubric",
+    "render_html",
+    "render_json",
+    "render_markdown",
+    "run_benchmark",
 ]

@@ -29,6 +29,9 @@ classifiers = [
 # transitive dependency tree. Real providers live behind optional extras (M2).
 dependencies = []
 
+[project.scripts]
+llmjudge = "llmjudge.cli:main"
+
 # Ships a pytest plugin inside this distribution (no separate package to
 # install or publish). It is a top-level module (not llmjudge.pytest_plugin) so
 # pytest's bootstrap import doesn't pull in the whole library before coverage
