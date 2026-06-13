@@ -59,15 +59,16 @@ adopted core. Narrow and deep beats wide and shallow.
 ## Done / handoff
 - [x] wheel builds (`uv build`; verified importable + CLI works from a clean env)
 - [x] pushed to public GitHub repo, CI green on 3.11/3.12/3.13
-- [ ] (human) publish to PyPI + submit to "Claude for Open Source"
+- [x] published to PyPI as `llm-judge-kit` (v0.1.0)
+- [ ] (human) submit to "Claude for Open Source"
 
 All milestones M0–M5 complete. Gate green (ruff + ruff-format + mypy strict +
-pytest, 99.9% coverage, 214 tests + 3 skipped live). New provider/judge/rubric
+pytest, 99.9% coverage, 215 tests + 3 skipped live). New provider/judge/rubric
 adds with no core changes (registries + protocols). Architecture is modular:
 benchmark ⟂ provider ⟂ judge ⟂ reporting.
 
 ## Decisions log (ambiguity resolutions)
-- Repo root at `~/llm_judge_kit` (durable) rather than the session outputs path.
+- Repo root at `~/llmjudge` (durable) rather than the session outputs path.
 - Dev env pinned to CPython 3.12 (mypy/tooling stability); `requires-python>=3.11`.
 - Core has zero runtime deps; providers behind extras `[openai]/[anthropic]/[ollama]`.
 - pytest plugin ships inside the `llm_judge_kit` dist via a `pytest11` entry point
