@@ -120,6 +120,42 @@ The cache key is `version + provider + model + prompt + kwargs`, so it is stable
 and invalidates correctly across library versions. Logs are emitted on the
 `llmjudge` logger (silent by default; call `enable_debug_logging()` to see them).
 
+## Integrations
+
+### pytest — eval as ordinary tests
+
+Installing `llmjudge` registers a pytest plugin (no conftest wiring). The
+`llm_judge` fixture turns an eval into a normal test; a failure reads like any
+other failing assertion (score, reason, violations):
+
+```python
+def test_answer_is_grounded(llm_judge):
+    llm_judge.assert_passes(
+        prompt="How tall is the Eiffel Tower?",
+        response=my_rag_pipeline("How tall is the Eiffel Tower?"),
+        rubric="groundedness",
+        context=retrieved_docs,
+        threshold=0.7,
+    )
+```
+
+Pick the judge model once for the whole suite — it defaults to `mock` (offline),
+so tests are green until you point them at a real model:
+
+```bash
+pytest --llmjudge-provider "openai:gpt-5"      # or: export LLMJUDGE_PROVIDER=...
+```
+
+### Any framework
+
+LLMJudge judges *strings*, so it drops into any stack — LangChain, LlamaIndex,
+DSPy, a raw script — with no adapter. Whatever produces the output, pass it in:
+
+```python
+output = my_chain.invoke(question)          # LangChain / LlamaIndex / your code
+result = Judge(provider="openai:gpt-5", rubric="relevance").score(question, output)
+```
+
 ## Extend without touching the core
 
 Add a **rubric** ([`examples/custom_rubric.py`](examples/custom_rubric.py)):

@@ -29,6 +29,13 @@ classifiers = [
 # transitive dependency tree. Real providers live behind optional extras (M2).
 dependencies = []
 
+# Ships a pytest plugin inside this distribution (no separate package to
+# install or publish). It is a top-level module (not llmjudge.pytest_plugin) so
+# pytest's bootstrap import doesn't pull in the whole library before coverage
+# starts. Auto-loaded by pytest when llmjudge is installed.
+[project.entry-points.pytest11]
+llmjudge = "pytest_llmjudge"
+
 [project.urls]
 Homepage = "https://github.com/Nikolay26ru/llmjudge"
 Repository = "https://github.com/Nikolay26ru/llmjudge"
@@ -55,8 +62,11 @@ path = "src/llmjudge/_version.py"
 [tool.hatch.build.targets.wheel]
 packages = ["src/llmjudge"]
 
+[tool.hatch.build.targets.wheel.force-include]
+"src/pytest_llmjudge.py" = "pytest_llmjudge.py"
+
 [tool.hatch.build.targets.sdist]
-include = ["src/llmjudge", "README.md", "LICENSE", "CHANGELOG.md"]
+include = ["src/llmjudge", "src/pytest_llmjudge.py", "README.md", "LICENSE", "CHANGELOG.md"]
 
 [tool.ruff]
 line-length = 100

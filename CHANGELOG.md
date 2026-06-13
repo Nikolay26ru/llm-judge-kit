@@ -47,6 +47,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     `enable_debug_logging()` for local debugging).
   - Version moved to `_version.py` (single source; hatchling dynamic version).
 
+- **Adoption surface (M4):**
+  - Bundled pytest plugin (`pytest11` entry point → top-level `pytest_llmjudge`
+    module): the `llm_judge` fixture and `JudgeHelper.assert_passes` let you
+    write evals as ordinary pytest tests, with score/reason/violations in the
+    failure message. Choose the model with `--llmjudge-provider` or
+    `$LLMJUDGE_PROVIDER` (defaults to `mock`, so suites run offline).
+  - README "Integrations" section, including a framework-agnostic note (works
+    with LangChain / LlamaIndex / any pipeline — it judges strings).
+
 ### Hardened (M1 adversarial review)
 - Trailing-comma JSON repair is now string-aware — it no longer corrupts string
   values that contain `,}` or `,]`.

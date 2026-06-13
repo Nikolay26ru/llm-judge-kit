@@ -44,9 +44,11 @@ adopted core. Narrow and deep beats wide and shallow.
 - [x] single-source version via `_version.py` + hatchling dynamic version
 
 ## M4 — Adoption surface
-- [ ] `pytest11` plugin (eval as ordinary pytest tests)
-- [ ] thin framework integrations / examples
-- [ ] README "Integrations" section
+- [x] `pytest11` plugin (`llm_judge` fixture, `assert_passes`, `--llmjudge-provider`)
+- [x] shipped as a top-level `pytest_llmjudge` module (lazy imports) so the
+      bootstrap auto-load doesn't break coverage or pull in the whole library
+- [x] thin framework-agnostic integration note (LangChain/LlamaIndex/any) + examples
+- [x] README "Integrations" section
 
 ## M5 — Platform layer
 - [ ] CLI (`llmjudge eval` / `compare` / `report`)
