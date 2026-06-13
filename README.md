@@ -84,6 +84,42 @@ judge = Judge(provider="openai:gpt-5", rubric="groundedness")
 result = judge.score(question, answer, context=retrieved_docs)  # RAG check
 ```
 
+## Consensus (vote across models)
+
+Run several judge models and aggregate — `confidence` reflects how much they
+**agree** ([`examples/consensus.py`](examples/consensus.py)):
+
+```python
+judge = Judge.consensus(
+    ["openai:gpt-5", "anthropic:claude-opus-4.8", "ollama:llama3"],
+    rubric="factuality",
+)
+result = judge.score(prompt, response)
+result.score          # mean (or median) of member scores
+result.confidence     # high when members agree, low when they diverge
+result.metadata["votes"]   # each member's score
+```
+
+## Reliability & caching
+
+Both wrappers are providers, so they compose around any backend
+([`examples/reliability_and_cache.py`](examples/reliability_and_cache.py)):
+
+```python
+from llmjudge import Judge, OpenAIProvider, RetryProvider, CachingProvider
+
+provider = CachingProvider(                      # memoize identical calls
+    RetryProvider(                               # retry w/ backoff + timeout
+        OpenAIProvider(model="gpt-5"), retries=3, timeout=30,
+    )
+)
+judge = Judge(provider=provider, rubric="factuality")
+```
+
+The cache key is `version + provider + model + prompt + kwargs`, so it is stable
+and invalidates correctly across library versions. Logs are emitted on the
+`llmjudge` logger (silent by default; call `enable_debug_logging()` to see them).
+
 ## Extend without touching the core
 
 Add a **rubric** ([`examples/custom_rubric.py`](examples/custom_rubric.py)):

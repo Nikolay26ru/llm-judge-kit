@@ -14,6 +14,10 @@ See ``README.md`` for a runnable example.
 
 from __future__ import annotations
 
+from llmjudge._logging import enable_debug_logging, get_logger
+from llmjudge._version import __version__
+from llmjudge.caching import CachingProvider
+from llmjudge.consensus import ConsensusJudge
 from llmjudge.errors import (
     ConfigurationError,
     LLMJudgeError,
@@ -34,6 +38,7 @@ from llmjudge.providers import (
     make_provider,
     register_provider,
 )
+from llmjudge.reliability import RetryProvider
 from llmjudge.rubrics import (
     Rubric,
     available_rubrics,
@@ -42,12 +47,12 @@ from llmjudge.rubrics import (
 )
 from llmjudge.types import JudgeResult, ProviderResponse
 
-__version__ = "0.1.0"
-
 __all__ = [
     "AnthropicProvider",
     "BaseProvider",
+    "CachingProvider",
     "ConfigurationError",
+    "ConsensusJudge",
     "Judge",
     "JudgeResult",
     "LLMJudgeError",
@@ -58,12 +63,15 @@ __all__ = [
     "Provider",
     "ProviderError",
     "ProviderResponse",
+    "RetryProvider",
     "Rubric",
     "RubricError",
     "__version__",
     "available_providers",
     "available_rubrics",
+    "enable_debug_logging",
     "extract_json",
+    "get_logger",
     "get_rubric",
     "make_provider",
     "register_provider",

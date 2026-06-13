@@ -16,14 +16,19 @@ Swapping in a real backend is just a different spec, e.g.
 from __future__ import annotations
 
 import math
-from typing import Any
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, Any
 
+from llmjudge._logging import log_judgement
 from llmjudge.errors import ConfigurationError, ParseError
 from llmjudge.parsing import extract_json
 from llmjudge.providers.base import Provider
 from llmjudge.providers.registry import make_provider
 from llmjudge.rubrics.base import Rubric, get_rubric
 from llmjudge.types import JudgeResult, ProviderResponse
+
+if TYPE_CHECKING:
+    from llmjudge.consensus import Aggregate, ConsensusJudge
 
 
 class Judge:
@@ -80,9 +85,36 @@ class Judge:
             prompt=prompt, response=response, context=context, reference=reference
         )
         provider_response = self.provider.complete(judge_prompt, **provider_kwargs)
-        return self._build_result(provider_response)
+        result = self._build_result(provider_response)
+        log_judgement(
+            provider=result.metadata.get("provider"),
+            model=result.metadata.get("model"),
+            rubric=result.rubric,
+            score=result.score,
+            confidence=result.confidence,
+        )
+        return result
 
     __call__ = score
+
+    @classmethod
+    def consensus(
+        cls,
+        providers: Sequence[str | Provider],
+        rubric: str | Rubric = "factuality",
+        *,
+        threshold: float = 0.5,
+        aggregate: Aggregate = "mean",
+    ) -> ConsensusJudge:
+        """Build a :class:`~llmjudge.consensus.ConsensusJudge` over ``providers``.
+
+        Each provider gets its own ``Judge`` with the shared ``rubric``; the
+        consensus aggregates their scores and derives confidence from agreement.
+        """
+        from llmjudge.consensus import ConsensusJudge
+
+        judges = [cls(provider, rubric) for provider in providers]
+        return ConsensusJudge(judges, threshold=threshold, aggregate=aggregate)
 
     def passed(
         self,

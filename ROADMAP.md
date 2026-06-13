@@ -36,10 +36,12 @@ adopted core. Narrow and deep beats wide and shallow.
 - [x] offline tests via injected fake clients (no network); lazy SDK import
 
 ## M3 — Consensus + reliability
-- [ ] `ConsensusJudge` (voting across judge models, confidence from agreement)
-- [ ] retry + timeout wrapper
-- [ ] call cache (key = hash of prompt+rubric+provider+version)
-- [ ] structured logging
+- [x] `ConsensusJudge` (voting across judge models, confidence from agreement)
+- [x] `Judge.consensus(...)` classmethod (target API)
+- [x] `RetryProvider` — retry + backoff + timeout wrapper (composable)
+- [x] `CachingProvider` — call cache (key = hash of version+provider+model+prompt+kwargs)
+- [x] structured logging (`llmjudge` logger, NullHandler, `enable_debug_logging`)
+- [x] single-source version via `_version.py` + hatchling dynamic version
 
 ## M4 — Adoption surface
 - [ ] `pytest11` plugin (eval as ordinary pytest tests)

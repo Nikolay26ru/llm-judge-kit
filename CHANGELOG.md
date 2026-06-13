@@ -35,6 +35,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Offline unit tests drive every provider through injected fake clients;
     live API tests are gated behind `LLMJUDGE_LIVE_TESTS=1` (skipped by default).
 
+- **Consensus + reliability (M3):**
+  - `ConsensusJudge` and `Judge.consensus([...], rubric=...)` — aggregate
+    several judges (mean/median); `confidence` is derived from agreement
+    (tight spread → high confidence) and member votes land in `metadata`.
+  - `RetryProvider` — composable retry-with-backoff and optional per-call
+    timeout wrapper (injectable sleep for deterministic tests).
+  - `CachingProvider` — memoizes completions; key = hash of
+    `version + provider + model + prompt + kwargs` (pluggable store).
+  - Structured logging on the `llmjudge` logger (ships a `NullHandler`;
+    `enable_debug_logging()` for local debugging).
+  - Version moved to `_version.py` (single source; hatchling dynamic version).
+
 ### Hardened (M1 adversarial review)
 - Trailing-comma JSON repair is now string-aware — it no longer corrupts string
   values that contain `,}` or `,]`.
