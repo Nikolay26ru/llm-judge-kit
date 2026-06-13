@@ -91,12 +91,13 @@ stands. `LLMJudgeError` (published API) unchanged.
 - [x] verify `py.typed` ships in the wheel; clean-venv install + `llm-judge-kit --version` → ok
 - Reviewed by subagent: complete & correct, gate green (217 passed).
 
-### Block B — Product depth & DX
-- [ ] Freeze + document the public API surface (`docs/api.md` + an `__all__` snapshot test)
-- [ ] Run every README/`examples/` snippet in a clean env; fix drift
-- [ ] New rubrics `coherence`, `completeness` (+ tests)
-- [ ] pytest-plugin DX: failure shows score/reason/violations (verify) + doc example
-- [ ] Benchmark demo: dataset + one command → HTML report (referenced from README)
+### Block B — Product depth & DX ✅
+- [x] Freeze + document the public API surface (`docs/api.md` + `__all__` snapshot test)
+- [x] Run every README/`examples/` snippet in a clean env (CI: `tests/test_examples.py`)
+- [x] New rubrics `coherence`, `completeness` (+ tests)
+- [x] pytest-plugin DX: failure shows score/reason/violations; example in `examples/test_with_pytest.py`
+- [x] Benchmark demo: shipped dataset + one command → MD/HTML report, reproduced in README
+- Reviewed by subagent: complete & correct, gate green (219 passed).
 
 ### Block C — Launch drafts (LOCAL/gitignored; human sends)
 - [ ] `docs/launch/{show-hn,reddit,x-thread,blog,comparison}.md` — facts web-verified, `[VERIFY:]` where not
