@@ -21,13 +21,13 @@ Every change must pass the same gate CI runs:
 uv run ruff check .
 uv run ruff format --check .
 uv run mypy src
-uv run pytest --cov=llmjudge --cov-report=term-missing
+uv run pytest --cov=llm_judge_kit --cov-report=term-missing
 ```
 
 - Coverage must stay **≥ 95%**.
 - mypy runs in **strict** mode.
 - Unit tests must be **offline** — use `MockProvider`. Never make network calls
-  in unit tests. Live provider tests live behind `LLMJUDGE_LIVE_TESTS=1`.
+  in unit tests. Live provider tests live behind `LLM_JUDGE_KIT_LIVE_TESTS=1`.
 
 ## Conventions
 

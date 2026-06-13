@@ -4,13 +4,13 @@ from __future__ import annotations
 
 import pytest
 
-from llmjudge.errors import RubricError
-from llmjudge.rubrics import (
+from llm_judge_kit.errors import RubricError
+from llm_judge_kit.rubrics import (
     available_rubrics,
     get_rubric,
     register_rubric,
 )
-from llmjudge.rubrics.base import Rubric
+from llm_judge_kit.rubrics.base import Rubric
 
 
 def test_builtins_are_registered() -> None:

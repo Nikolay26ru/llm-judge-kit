@@ -1,9 +1,9 @@
-"""Structured logging for llmjudge.
+"""Structured logging for llm_judge_kit.
 
-Libraries should not configure logging for the host app, so the ``llmjudge``
+Libraries should not configure logging for the host app, so the ``llm_judge_kit``
 logger ships with a :class:`~logging.NullHandler` and emits nothing until the
 app opts in. Each judgement is logged at DEBUG with structured fields nested
-under a single ``llmjudge`` record attribute (so they never collide with stdlib
+under a single ``llm_judge_kit`` record attribute (so they never collide with stdlib
 ``LogRecord`` fields).
 """
 
@@ -13,26 +13,26 @@ import json
 import logging
 from typing import Any
 
-logger = logging.getLogger("llmjudge")
+logger = logging.getLogger("llm_judge_kit")
 logger.addHandler(logging.NullHandler())
 
 
 def get_logger() -> logging.Logger:
-    """Return the package logger (``logging.getLogger("llmjudge")``)."""
+    """Return the package logger (``logging.getLogger("llm_judge_kit")``)."""
     return logger
 
 
 def log_judgement(**fields: Any) -> None:
     """Emit a structured DEBUG record describing one judgement."""
-    logger.debug("judgement", extra={"llmjudge": fields})
+    logger.debug("judgement", extra={"llm_judge_kit": fields})
 
 
 class _StructuredFormatter(logging.Formatter):
-    """Appends the structured ``llmjudge`` fields to the message as JSON."""
+    """Appends the structured ``llm_judge_kit`` fields to the message as JSON."""
 
     def format(self, record: logging.LogRecord) -> str:
         base = super().format(record)
-        fields = getattr(record, "llmjudge", None)
+        fields = getattr(record, "llm_judge_kit", None)
         if fields:
             return f"{base} {json.dumps(fields, sort_keys=True, default=repr)}"
         return base

@@ -14,9 +14,9 @@ import json
 from collections.abc import MutableMapping
 from typing import Any
 
-from llmjudge._version import __version__
-from llmjudge.providers.base import BaseProvider, Provider
-from llmjudge.types import ProviderResponse
+from llm_judge_kit._version import __version__
+from llm_judge_kit.providers.base import BaseProvider, Provider
+from llm_judge_kit.types import ProviderResponse
 
 
 class CachingProvider(BaseProvider):

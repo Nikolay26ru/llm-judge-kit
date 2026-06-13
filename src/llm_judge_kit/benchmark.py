@@ -1,8 +1,8 @@
 """Minimal benchmark engine: run a judge over a dataset, collect a report.
 
 Intentionally decoupled from the judge implementation — anything with a
-``score(prompt, response, ...)`` method (a :class:`~llmjudge.Judge` or a
-:class:`~llmjudge.ConsensusJudge`) can be benchmarked.
+``score(prompt, response, ...)`` method (a :class:`~llm_judge_kit.Judge` or a
+:class:`~llm_judge_kit.ConsensusJudge`) can be benchmarked.
 """
 
 from __future__ import annotations
@@ -12,8 +12,8 @@ from collections.abc import Iterable
 from dataclasses import dataclass
 from typing import Any, Protocol
 
-from llmjudge.dataset import Case
-from llmjudge.types import JudgeResult
+from llm_judge_kit.dataset import Case
+from llm_judge_kit.types import JudgeResult
 
 
 class Scorer(Protocol):

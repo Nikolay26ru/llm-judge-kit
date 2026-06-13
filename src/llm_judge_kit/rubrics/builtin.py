@@ -1,12 +1,12 @@
 """The built-in rubrics, registered on import.
 
 Five general-purpose rubrics cover the most common LLM-as-a-judge needs. Users
-can add their own with :func:`llmjudge.register_rubric` — no core changes needed.
+can add their own with :func:`llm_judge_kit.register_rubric` — no core changes needed.
 """
 
 from __future__ import annotations
 
-from llmjudge.rubrics.base import Rubric, register_rubric
+from llm_judge_kit.rubrics.base import Rubric, register_rubric
 
 FACTUALITY = Rubric(
     name="factuality",

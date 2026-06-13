@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import pytest
 
-from llmjudge import Case, Judge, MockProvider, run_benchmark
-from llmjudge.errors import ConfigurationError
+from llm_judge_kit import Case, Judge, MockProvider, run_benchmark
+from llm_judge_kit.errors import ConfigurationError
 
 
 def _judge(score: float, rubric: str = "relevance") -> Judge:

@@ -1,4 +1,4 @@
-"""Typed exception hierarchy for llmjudge.
+"""Typed exception hierarchy for llm_judge_kit.
 
 Every error raised by the library derives from :class:`LLMJudgeError`, so
 downstream code can catch the whole family with a single ``except`` while still
@@ -9,7 +9,7 @@ from __future__ import annotations
 
 
 class LLMJudgeError(Exception):
-    """Base class for all llmjudge errors."""
+    """Base class for all llm_judge_kit errors."""
 
 
 class ConfigurationError(LLMJudgeError):

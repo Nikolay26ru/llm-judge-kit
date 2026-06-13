@@ -4,7 +4,7 @@ Durable plan of record. Survives context compaction — re-read this after any
 `/clear` or auto-compact to recover where work stopped. Keep checkboxes current.
 
 Strategy: ship the **wedge** first — a small, flawless, easy-to-import
-`llmjudge` LLM-as-a-judge primitive — then build the platform around the
+`llm_judge_kit` LLM-as-a-judge primitive — then build the platform around the
 adopted core. Narrow and deep beats wide and shallow.
 
 ## M0 — Scaffold
@@ -32,7 +32,7 @@ adopted core. Narrow and deep beats wide and shallow.
 - [x] openai-compatible provider (any OpenAI-compatible base_url)
 - [x] anthropic provider
 - [x] ollama provider (httpx)
-- [x] live tests gated behind `LLMJUDGE_LIVE_TESTS=1` (skip by default)
+- [x] live tests gated behind `LLM_JUDGE_KIT_LIVE_TESTS=1` (skip by default)
 - [x] offline tests via injected fake clients (no network); lazy SDK import
 
 ## M3 — Consensus + reliability
@@ -40,18 +40,18 @@ adopted core. Narrow and deep beats wide and shallow.
 - [x] `Judge.consensus(...)` classmethod (target API)
 - [x] `RetryProvider` — retry + backoff + timeout wrapper (composable)
 - [x] `CachingProvider` — call cache (key = hash of version+provider+model+prompt+kwargs)
-- [x] structured logging (`llmjudge` logger, NullHandler, `enable_debug_logging`)
+- [x] structured logging (`llm_judge_kit` logger, NullHandler, `enable_debug_logging`)
 - [x] single-source version via `_version.py` + hatchling dynamic version
 
 ## M4 — Adoption surface
-- [x] `pytest11` plugin (`llm_judge` fixture, `assert_passes`, `--llmjudge-provider`)
-- [x] shipped as a top-level `pytest_llmjudge` module (lazy imports) so the
+- [x] `pytest11` plugin (`llm_judge_kit` fixture, `assert_passes`, `--llm-judge-kit-provider`)
+- [x] shipped as a top-level `pytest_llm_judge_kit` module (lazy imports) so the
       bootstrap auto-load doesn't break coverage or pull in the whole library
 - [x] thin framework-agnostic integration note (LangChain/LlamaIndex/any) + examples
 - [x] README "Integrations" section
 
 ## M5 — Platform layer
-- [x] CLI (`llmjudge eval` / `compare` / `report`) — argparse, zero deps, `--fail-under` for CI
+- [x] CLI (`llm-judge-kit eval` / `compare` / `report`) — argparse, zero deps, `--fail-under` for CI
 - [x] reporting (JSON / Markdown / HTML), round-trips via `load_report`
 - [x] minimal benchmark engine (`run_benchmark` + `Report` stats) + dataset loader (`.jsonl`/`.json`)
 - [x] reporting kept separate from the engine (benchmark ⟂ reporting)
@@ -67,8 +67,8 @@ adds with no core changes (registries + protocols). Architecture is modular:
 benchmark ⟂ provider ⟂ judge ⟂ reporting.
 
 ## Decisions log (ambiguity resolutions)
-- Repo root at `~/llmjudge` (durable) rather than the session outputs path.
+- Repo root at `~/llm_judge_kit` (durable) rather than the session outputs path.
 - Dev env pinned to CPython 3.12 (mypy/tooling stability); `requires-python>=3.11`.
 - Core has zero runtime deps; providers behind extras `[openai]/[anthropic]/[ollama]`.
-- pytest plugin ships inside the `llmjudge` dist via a `pytest11` entry point
+- pytest plugin ships inside the `llm_judge_kit` dist via a `pytest11` entry point
   (no second distribution to publish) — easier to depend on.

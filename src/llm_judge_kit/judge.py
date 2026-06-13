@@ -1,10 +1,10 @@
 """The :class:`Judge` — the wedge primitive.
 
 A ``Judge`` pairs a provider with a rubric and turns a (prompt, response) pair
-into a typed :class:`~llmjudge.types.JudgeResult`. Providers and rubrics are
+into a typed :class:`~llm_judge_kit.types.JudgeResult`. Providers and rubrics are
 resolved from strings via their registries, so:
 
-    >>> from llmjudge import Judge
+    >>> from llm_judge_kit import Judge
     >>> judge = Judge(provider="mock", rubric="factuality")
     >>> isinstance(float(judge.score("2+2?", "4")), float)
     True
@@ -19,16 +19,16 @@ import math
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any
 
-from llmjudge._logging import log_judgement
-from llmjudge.errors import ConfigurationError, ParseError
-from llmjudge.parsing import extract_json
-from llmjudge.providers.base import Provider
-from llmjudge.providers.registry import make_provider
-from llmjudge.rubrics.base import Rubric, get_rubric
-from llmjudge.types import JudgeResult, ProviderResponse
+from llm_judge_kit._logging import log_judgement
+from llm_judge_kit.errors import ConfigurationError, ParseError
+from llm_judge_kit.parsing import extract_json
+from llm_judge_kit.providers.base import Provider
+from llm_judge_kit.providers.registry import make_provider
+from llm_judge_kit.rubrics.base import Rubric, get_rubric
+from llm_judge_kit.types import JudgeResult, ProviderResponse
 
 if TYPE_CHECKING:
-    from llmjudge.consensus import Aggregate, ConsensusJudge
+    from llm_judge_kit.consensus import Aggregate, ConsensusJudge
 
 
 class Judge:
@@ -38,7 +38,7 @@ class Judge:
         provider: A provider spec string (``"scheme:model"``, e.g. ``"mock"`` or
             ``"openai:gpt-5"``) or any object with a ``complete()`` method.
         rubric: A registered rubric name (e.g. ``"factuality"``) or a
-            :class:`~llmjudge.rubrics.base.Rubric` instance.
+            :class:`~llm_judge_kit.rubrics.base.Rubric` instance.
         threshold: Default pass/fail cutoff used by :meth:`passed`.
     """
 
@@ -106,12 +106,12 @@ class Judge:
         threshold: float = 0.5,
         aggregate: Aggregate = "mean",
     ) -> ConsensusJudge:
-        """Build a :class:`~llmjudge.consensus.ConsensusJudge` over ``providers``.
+        """Build a :class:`~llm_judge_kit.consensus.ConsensusJudge` over ``providers``.
 
         Each provider gets its own ``Judge`` with the shared ``rubric``; the
         consensus aggregates their scores and derives confidence from agreement.
         """
-        from llmjudge.consensus import ConsensusJudge
+        from llm_judge_kit.consensus import ConsensusJudge
 
         judges = [cls(provider, rubric) for provider in providers]
         return ConsensusJudge(judges, threshold=threshold, aggregate=aggregate)

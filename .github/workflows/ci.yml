@@ -45,5 +45,5 @@ jobs:
 
       - name: Pytest with coverage (offline; no live provider calls)
         env:
-          LLMJUDGE_LIVE_TESTS: "0"
-        run: uv run pytest --cov=llmjudge --cov-report=term-missing
+          LLM_JUDGE_KIT_LIVE_TESTS: "0"
+        run: uv run pytest --cov=llm_judge_kit --cov-report=term-missing

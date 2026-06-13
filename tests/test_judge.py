@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import pytest
 
-from llmjudge import Judge, MockProvider
-from llmjudge.errors import ConfigurationError, ParseError
-from llmjudge.rubrics.base import Rubric
-from llmjudge.types import ProviderResponse
+from llm_judge_kit import Judge, MockProvider
+from llm_judge_kit.errors import ConfigurationError, ParseError
+from llm_judge_kit.rubrics.base import Rubric
+from llm_judge_kit.types import ProviderResponse
 
 
 class _Recorder:

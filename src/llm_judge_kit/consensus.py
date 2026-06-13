@@ -13,11 +13,11 @@ from collections import Counter
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, Literal
 
-from llmjudge.errors import ConfigurationError
-from llmjudge.types import JudgeResult
+from llm_judge_kit.errors import ConfigurationError
+from llm_judge_kit.types import JudgeResult
 
 if TYPE_CHECKING:
-    from llmjudge.judge import Judge
+    from llm_judge_kit.judge import Judge
 
 Aggregate = Literal["mean", "median"]
 
@@ -27,7 +27,7 @@ class ConsensusJudge:
 
     Args:
         judges: The member judges (anything with a ``score`` method); usually
-            built via :meth:`llmjudge.Judge.consensus`.
+            built via :meth:`llm_judge_kit.Judge.consensus`.
         threshold: Default pass/fail cutoff used by :meth:`passed`.
         aggregate: How to combine member scores — ``"mean"`` or ``"median"``.
 

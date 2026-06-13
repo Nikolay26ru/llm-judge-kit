@@ -5,7 +5,7 @@ ConfigurationError instead of silently judging against the model's own
 knowledge.
 """
 
-from llmjudge import Judge, MockProvider
+from llm_judge_kit import Judge, MockProvider
 
 judge = Judge(provider=MockProvider(fixed_score=0.95), rubric="groundedness")
 

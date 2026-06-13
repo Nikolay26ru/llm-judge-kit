@@ -5,14 +5,14 @@ Importing this package registers the built-in rubrics as a side effect.
 
 from __future__ import annotations
 
-from llmjudge.rubrics import builtin  # noqa: F401  (registers built-in rubrics)
-from llmjudge.rubrics.base import (
+from llm_judge_kit.rubrics import builtin  # noqa: F401  (registers built-in rubrics)
+from llm_judge_kit.rubrics.base import (
     Rubric,
     available_rubrics,
     get_rubric,
     register_rubric,
 )
-from llmjudge.rubrics.builtin import (
+from llm_judge_kit.rubrics.builtin import (
     FACTUALITY,
     GROUNDEDNESS,
     INSTRUCTION_FOLLOWING,

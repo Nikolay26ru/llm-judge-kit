@@ -1,4 +1,4 @@
-"""Command-line interface: ``llmjudge eval | compare | report``.
+"""Command-line interface: ``llm-judge-kit eval | compare | report``.
 
 Built on argparse (stdlib) so the platform layer adds no dependencies. The
 default provider is ``mock`` so commands run offline out of the box.
@@ -11,11 +11,11 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from llmjudge.benchmark import Report, run_benchmark
-from llmjudge.dataset import load_dataset
-from llmjudge.errors import LLMJudgeError
-from llmjudge.judge import Judge
-from llmjudge.reporting import load_report, render_html, render_json, render_markdown
+from llm_judge_kit.benchmark import Report, run_benchmark
+from llm_judge_kit.dataset import load_dataset
+from llm_judge_kit.errors import LLMJudgeError
+from llm_judge_kit.judge import Judge
+from llm_judge_kit.reporting import load_report, render_html, render_json, render_markdown
 
 _RENDERERS = {
     "json": render_json,
@@ -27,7 +27,7 @@ _RENDERERS = {
 
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="llmjudge", description="Provider-agnostic LLM-as-a-judge toolkit."
+        prog="llm-judge-kit", description="Provider-agnostic LLM-as-a-judge toolkit."
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
@@ -136,7 +136,7 @@ def _cmd_report(args: argparse.Namespace) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
-    """Entry point for the ``llmjudge`` console script."""
+    """Entry point for the ``llm_judge_kit`` console script."""
     parser = _build_parser()
     args = parser.parse_args(argv)
     command: Any = args.func

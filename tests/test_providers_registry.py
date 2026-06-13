@@ -4,14 +4,14 @@ from __future__ import annotations
 
 import pytest
 
-from llmjudge.errors import ConfigurationError
-from llmjudge.providers.base import BaseProvider
-from llmjudge.providers.registry import (
+from llm_judge_kit.errors import ConfigurationError
+from llm_judge_kit.providers.base import BaseProvider
+from llm_judge_kit.providers.registry import (
     available_providers,
     make_provider,
     register_provider,
 )
-from llmjudge.types import ProviderResponse
+from llm_judge_kit.types import ProviderResponse
 
 
 class _Recorder(BaseProvider):

@@ -14,7 +14,7 @@ import re
 from collections.abc import Iterator
 from typing import Any
 
-from llmjudge.errors import ParseError
+from llm_judge_kit.errors import ParseError
 
 # ```json ... ``` or plain ``` ... ``` fenced blocks.
 _FENCE_RE = re.compile(r"```(?:json|JSON)?\s*(.*?)```", re.DOTALL)

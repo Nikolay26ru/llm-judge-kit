@@ -12,10 +12,10 @@ import math
 from pathlib import Path
 from typing import Any
 
-from llmjudge.benchmark import CaseResult, Report
-from llmjudge.dataset import Case
-from llmjudge.errors import DatasetError
-from llmjudge.types import JudgeResult
+from llm_judge_kit.benchmark import CaseResult, Report
+from llm_judge_kit.dataset import Case
+from llm_judge_kit.errors import DatasetError
+from llm_judge_kit.types import JudgeResult
 
 
 def report_to_dict(report: Report) -> dict[str, Any]:

@@ -6,7 +6,7 @@ import dataclasses
 
 import pytest
 
-from llmjudge.types import JudgeResult, ProviderResponse
+from llm_judge_kit.types import JudgeResult, ProviderResponse
 
 
 def test_float_returns_score() -> None:

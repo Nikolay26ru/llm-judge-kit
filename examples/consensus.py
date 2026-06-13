@@ -7,7 +7,7 @@ Offline/deterministic with mocks. In production use real specs:
     )
 """
 
-from llmjudge import ConsensusJudge, Judge, MockProvider
+from llm_judge_kit import ConsensusJudge, Judge, MockProvider
 
 panel = ConsensusJudge(
     [

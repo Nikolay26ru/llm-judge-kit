@@ -1,11 +1,11 @@
 """pytest plugin: run LLM evals as ordinary pytest tests.
 
-Shipped inside the ``llmjudge`` distribution as a top-level module and wired up
-via a ``pytest11`` entry point, so installing ``llmjudge`` makes the
-``llm_judge`` fixture available in any pytest suite — no conftest wiring.
+Shipped inside the ``llm_judge_kit`` distribution as a top-level module and wired up
+via a ``pytest11`` entry point, so installing ``llm_judge_kit`` makes the
+``llm_judge_kit`` fixture available in any pytest suite — no conftest wiring.
 
-    def test_answer_is_grounded(llm_judge):
-        llm_judge.assert_passes(
+    def test_answer_is_grounded(llm_judge_kit):
+        llm_judge_kit.assert_passes(
             prompt="How tall is the Eiffel Tower?",
             response=my_model_output,
             rubric="groundedness",
@@ -13,14 +13,14 @@ via a ``pytest11`` entry point, so installing ``llmjudge`` makes the
             threshold=0.7,
         )
 
-Select the judge model with ``--llmjudge-provider`` or ``$LLMJUDGE_PROVIDER``
+Select the judge model with ``--llm-judge-kit-provider`` or ``$LLM_JUDGE_KIT_PROVIDER``
 (default ``"mock"`` so a suite runs offline until you point it at a real model).
 ``JudgeHelper`` is also usable directly in non-pytest eval scripts.
 
-This is a separate top-level module (not ``llmjudge.pytest_plugin``) on purpose:
-pytest auto-loads plugins during bootstrap, and importing the ``llmjudge``
+This is a separate top-level module (not ``llm_judge_kit.pytest_plugin``) on purpose:
+pytest auto-loads plugins during bootstrap, and importing the ``llm_judge_kit``
 package there would run all its imports before coverage starts. Here the
-``llmjudge`` imports are deferred into the methods, so loading the plugin pulls
+``llm_judge_kit`` imports are deferred into the methods, so loading the plugin pulls
 in only pytest + stdlib.
 """
 
@@ -32,8 +32,8 @@ from typing import TYPE_CHECKING, Any
 import pytest
 
 if TYPE_CHECKING:
-    from llmjudge.providers.base import Provider
-    from llmjudge.types import JudgeResult
+    from llm_judge_kit.providers.base import Provider
+    from llm_judge_kit.types import JudgeResult
 
 _DEFAULT_THRESHOLD = 0.7
 
@@ -46,7 +46,7 @@ class JudgeHelper:
     """
 
     def __init__(self, provider: str | Provider) -> None:
-        from llmjudge.providers.registry import make_provider
+        from llm_judge_kit.providers.registry import make_provider
 
         self.provider: Provider = make_provider(provider) if isinstance(provider, str) else provider
 
@@ -54,7 +54,7 @@ class JudgeHelper:
         self, prompt: str, response: str, *, rubric: str = "factuality", **kwargs: Any
     ) -> JudgeResult:
         """Score ``response`` against ``rubric`` and return the verdict."""
-        from llmjudge.judge import Judge
+        from llm_judge_kit.judge import Judge
 
         return Judge(provider=self.provider, rubric=rubric).score(prompt, response, **kwargs)
 
@@ -88,25 +88,28 @@ def _format_failure(rubric: str, threshold: float, result: JudgeResult) -> str:
 
 
 def _resolve_provider(config: pytest.Config) -> str:
-    option = config.getoption("--llmjudge-provider")
+    option = config.getoption("--llm-judge-kit-provider")
     if isinstance(option, str) and option:
         return option
-    return os.environ.get("LLMJUDGE_PROVIDER") or "mock"
+    return os.environ.get("LLM_JUDGE_KIT_PROVIDER") or "mock"
 
 
 def pytest_addoption(parser: pytest.Parser) -> None:
-    """Register the ``--llmjudge-provider`` option."""
-    group = parser.getgroup("llmjudge")
+    """Register the ``--llm-judge-kit-provider`` option."""
+    group = parser.getgroup("llm_judge_kit")
     group.addoption(
-        "--llmjudge-provider",
+        "--llm-judge-kit-provider",
         action="store",
         default=None,
-        help="Provider spec for the llm_judge fixture (default: $LLMJUDGE_PROVIDER or 'mock').",
+        help=(
+            "Provider spec for the llm_judge_kit fixture "
+            "(default: $LLM_JUDGE_KIT_PROVIDER or 'mock')."
+        ),
     )
 
 
 @pytest.fixture(scope="session")
-def llm_judge(request: pytest.FixtureRequest) -> JudgeHelper:
+def llm_judge_kit(request: pytest.FixtureRequest) -> JudgeHelper:
     """A :class:`JudgeHelper` bound to the configured provider.
 
     Session-scoped so the provider (and any underlying client) is built once for

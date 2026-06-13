@@ -6,8 +6,8 @@ from types import SimpleNamespace
 
 import pytest
 
-from llmjudge import JudgeResult, MockProvider
-from pytest_llmjudge import JudgeHelper, _format_failure, _resolve_provider
+from llm_judge_kit import JudgeResult, MockProvider
+from pytest_llm_judge_kit import JudgeHelper, _format_failure, _resolve_provider
 
 
 def test_judge_helper_resolves_string_provider() -> None:
@@ -50,29 +50,29 @@ def test_format_failure_omits_empty_sections() -> None:
 
 
 def test_resolve_provider_option_wins(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("LLMJUDGE_PROVIDER", "anthropic:x")
+    monkeypatch.setenv("LLM_JUDGE_KIT_PROVIDER", "anthropic:x")
     config = SimpleNamespace(getoption=lambda _name: "openai:gpt-5")
     assert _resolve_provider(config) == "openai:gpt-5"  # type: ignore[arg-type]
 
 
 def test_resolve_provider_env_fallback(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("LLMJUDGE_PROVIDER", "ollama:llama3")
+    monkeypatch.setenv("LLM_JUDGE_KIT_PROVIDER", "ollama:llama3")
     config = SimpleNamespace(getoption=lambda _name: None)
     assert _resolve_provider(config) == "ollama:llama3"  # type: ignore[arg-type]
 
 
 def test_resolve_provider_defaults_to_mock(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.delenv("LLMJUDGE_PROVIDER", raising=False)
+    monkeypatch.delenv("LLM_JUDGE_KIT_PROVIDER", raising=False)
     config = SimpleNamespace(getoption=lambda _name: None)
     assert _resolve_provider(config) == "mock"  # type: ignore[arg-type]
 
 
-def test_llm_judge_fixture_is_available(llm_judge: JudgeHelper) -> None:
+def test_llm_judge_kit_fixture_is_available(llm_judge_kit: JudgeHelper) -> None:
     # The fixture comes from the auto-loaded pytest11 entry point — its mere
     # availability proves the plugin is registered. Default provider is mock.
-    assert isinstance(llm_judge, JudgeHelper)
-    assert llm_judge.provider.name == "mock"
-    result = llm_judge.assert_passes("2+2?", "4", rubric="relevance", threshold=0.0)
+    assert isinstance(llm_judge_kit, JudgeHelper)
+    assert llm_judge_kit.provider.name == "mock"
+    result = llm_judge_kit.assert_passes("2+2?", "4", rubric="relevance", threshold=0.0)
     assert isinstance(result, JudgeResult)
 
 
@@ -82,11 +82,11 @@ def test_llm_judge_fixture_is_available(llm_judge: JudgeHelper) -> None:
 _fixture_ids: list[int] = []
 
 
-def test_fixture_is_session_scoped_a(llm_judge: JudgeHelper) -> None:
-    _fixture_ids.append(id(llm_judge))
+def test_fixture_is_session_scoped_a(llm_judge_kit: JudgeHelper) -> None:
+    _fixture_ids.append(id(llm_judge_kit))
     assert len(set(_fixture_ids)) == 1
 
 
-def test_fixture_is_session_scoped_b(llm_judge: JudgeHelper) -> None:
-    _fixture_ids.append(id(llm_judge))
+def test_fixture_is_session_scoped_b(llm_judge_kit: JudgeHelper) -> None:
+    _fixture_ids.append(id(llm_judge_kit))
     assert len(set(_fixture_ids)) == 1

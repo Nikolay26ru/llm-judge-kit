@@ -1,6 +1,6 @@
 """Extend LLMJudge with your own rubric — no changes to the core required."""
 
-from llmjudge import Judge, MockProvider, Rubric, register_rubric
+from llm_judge_kit import Judge, MockProvider, Rubric, register_rubric
 
 # Define and register a domain-specific rubric.
 conciseness = Rubric(

@@ -11,8 +11,8 @@ from __future__ import annotations
 import hashlib
 import json
 
-from llmjudge.providers.base import BaseProvider
-from llmjudge.types import ProviderResponse
+from llm_judge_kit.providers.base import BaseProvider
+from llm_judge_kit.types import ProviderResponse
 
 
 class MockProvider(BaseProvider):

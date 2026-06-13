@@ -4,7 +4,7 @@ To use a real model, swap the provider for a spec string, e.g.
 ``Judge(provider="openai:gpt-5", rubric="factuality")``.
 """
 
-from llmjudge import Judge, MockProvider
+from llm_judge_kit import Judge, MockProvider
 
 # MockProvider(fixed_score=...) keeps this example deterministic and offline.
 judge = Judge(provider=MockProvider(fixed_score=0.9), rubric="factuality")

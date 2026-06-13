@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from llmjudge import (
+from llm_judge_kit import (
     Case,
     Judge,
     MockProvider,
@@ -17,8 +17,8 @@ from llmjudge import (
     render_markdown,
     run_benchmark,
 )
-from llmjudge.errors import DatasetError
-from llmjudge.reporting import report_from_dict, report_to_dict
+from llm_judge_kit.errors import DatasetError
+from llm_judge_kit.reporting import report_from_dict, report_to_dict
 
 
 def _report_dict(**case_overrides: object) -> dict[str, object]:

@@ -1,7 +1,7 @@
 """Anthropic (Claude) provider via the Messages API.
 
 The ``anthropic`` SDK is imported lazily so the core stays dependency-free;
-install it with ``pip install 'llmjudge[anthropic]'``.
+install it with ``pip install 'llm_judge_kit[anthropic]'``.
 
 Note: we deliberately do not send ``temperature`` (recent Claude models reject
 sampling params). ``max_tokens`` is required by the Messages API and defaults to
@@ -12,9 +12,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from llmjudge.errors import ProviderError
-from llmjudge.providers.base import BaseProvider
-from llmjudge.types import ProviderResponse
+from llm_judge_kit.errors import ProviderError
+from llm_judge_kit.providers.base import BaseProvider
+from llm_judge_kit.types import ProviderResponse
 
 _DEFAULT_MODEL = "claude-opus-4-8"
 
@@ -50,7 +50,7 @@ class AnthropicProvider(BaseProvider):
             except ImportError as exc:  # pragma: no cover - exercised via monkeypatch
                 raise ProviderError(
                     "The 'anthropic' provider needs the anthropic package: "
-                    "pip install 'llmjudge[anthropic]'."
+                    "pip install 'llm_judge_kit[anthropic]'."
                 ) from exc
             client = anthropic.Anthropic(api_key=api_key)
         self._client: Any = client

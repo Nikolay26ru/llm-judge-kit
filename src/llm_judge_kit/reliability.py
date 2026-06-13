@@ -19,9 +19,9 @@ from concurrent.futures import ThreadPoolExecutor
 from concurrent.futures import TimeoutError as FuturesTimeout
 from typing import Any
 
-from llmjudge.errors import ProviderError
-from llmjudge.providers.base import BaseProvider, Provider
-from llmjudge.types import ProviderResponse
+from llm_judge_kit.errors import ProviderError
+from llm_judge_kit.providers.base import BaseProvider, Provider
+from llm_judge_kit.types import ProviderResponse
 
 
 class _Timeout(Exception):

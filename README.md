@@ -2,7 +2,7 @@
 
 > Provider-agnostic, reproducible, typed **LLM-as-a-judge** — a small primitive you can depend on.
 
-[![CI](https://github.com/Nikolay26ru/llmjudge/actions/workflows/ci.yml/badge.svg)](https://github.com/Nikolay26ru/llmjudge/actions/workflows/ci.yml)
+[![CI](https://github.com/Nikolay26ru/llm-judge-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/Nikolay26ru/llm-judge-kit/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Typed](https://img.shields.io/badge/typed-mypy%20strict-blue)](https://mypy-lang.org/)
@@ -15,10 +15,10 @@ tests** via a deterministic mock.
 ## Install
 
 ```bash
-pip install llmjudge                 # core only, zero deps
-pip install "llmjudge[openai]"       # + OpenAI-compatible provider
-pip install "llmjudge[anthropic]"    # + Anthropic provider
-pip install "llmjudge[all]"          # all providers
+pip install llm-judge-kit                 # core only, zero deps
+pip install "llm-judge-kit[openai]"       # + OpenAI-compatible provider
+pip install "llm-judge-kit[anthropic]"    # + Anthropic provider
+pip install "llm-judge-kit[all]"          # all providers
 ```
 
 ## Quickstart
@@ -26,7 +26,7 @@ pip install "llmjudge[all]"          # all providers
 This runs as-is — no API key, deterministic ([`examples/quickstart.py`](examples/quickstart.py)):
 
 ```python
-from llmjudge import Judge, MockProvider
+from llm_judge_kit import Judge, MockProvider
 
 # MockProvider(fixed_score=...) keeps this example deterministic and offline.
 judge = Judge(provider=MockProvider(fixed_score=0.9), rubric="factuality")
@@ -77,7 +77,7 @@ r.metadata         # provider, model, token usage, latency, cost
 
 `factuality`, `groundedness` (requires `context=`), `relevance`,
 `instruction_following`, `safety`. List them with
-`llmjudge.available_rubrics()`.
+`llm_judge_kit.available_rubrics()`.
 
 ```python
 judge = Judge(provider="openai:gpt-5", rubric="groundedness")
@@ -106,7 +106,7 @@ Both wrappers are providers, so they compose around any backend
 ([`examples/reliability_and_cache.py`](examples/reliability_and_cache.py)):
 
 ```python
-from llmjudge import Judge, OpenAIProvider, RetryProvider, CachingProvider
+from llm_judge_kit import Judge, OpenAIProvider, RetryProvider, CachingProvider
 
 provider = CachingProvider(                      # memoize identical calls
     RetryProvider(                               # retry w/ backoff + timeout
@@ -118,19 +118,19 @@ judge = Judge(provider=provider, rubric="factuality")
 
 The cache key is `version + provider + model + prompt + kwargs`, so it is stable
 and invalidates correctly across library versions. Logs are emitted on the
-`llmjudge` logger (silent by default; call `enable_debug_logging()` to see them).
+`llm_judge_kit` logger (silent by default; call `enable_debug_logging()` to see them).
 
 ## Integrations
 
 ### pytest — eval as ordinary tests
 
-Installing `llmjudge` registers a pytest plugin (no conftest wiring). The
-`llm_judge` fixture turns an eval into a normal test; a failure reads like any
+Installing `llm_judge_kit` registers a pytest plugin (no conftest wiring). The
+`llm_judge_kit` fixture turns an eval into a normal test; a failure reads like any
 other failing assertion (score, reason, violations):
 
 ```python
-def test_answer_is_grounded(llm_judge):
-    llm_judge.assert_passes(
+def test_answer_is_grounded(llm_judge_kit):
+    llm_judge_kit.assert_passes(
         prompt="How tall is the Eiffel Tower?",
         response=my_rag_pipeline("How tall is the Eiffel Tower?"),
         rubric="groundedness",
@@ -143,7 +143,7 @@ Pick the judge model once for the whole suite — it defaults to `mock` (offline
 so tests are green until you point them at a real model:
 
 ```bash
-pytest --llmjudge-provider "openai:gpt-5"      # or: export LLMJUDGE_PROVIDER=...
+pytest --llm-judge-kit-provider "openai:gpt-5"      # or: export LLM_JUDGE_KIT_PROVIDER=...
 ```
 
 ### Any framework
@@ -161,7 +161,7 @@ result = Judge(provider="openai:gpt-5", rubric="relevance").score(question, outp
 Add a **rubric** ([`examples/custom_rubric.py`](examples/custom_rubric.py)):
 
 ```python
-from llmjudge import Rubric, register_rubric
+from llm_judge_kit import Rubric, register_rubric
 
 register_rubric(Rubric(
     name="conciseness",
@@ -174,7 +174,7 @@ judge = Judge(provider="openai:gpt-5", rubric="conciseness")
 Add a **provider** — implement one method, optionally register a scheme:
 
 ```python
-from llmjudge import ProviderResponse, register_provider
+from llm_judge_kit import ProviderResponse, register_provider
 
 class MyProvider:
     name = "mine"
@@ -192,16 +192,16 @@ JSON Lines (`prompt` + `response`, optional `context`/`reference`/`id`); see
 [`examples/sample_dataset.jsonl`](examples/sample_dataset.jsonl).
 
 ```bash
-llmjudge eval cases.jsonl --provider openai:gpt-5 --rubric factuality --format md
-llmjudge eval cases.jsonl --fail-under 0.9            # exit non-zero in CI if pass rate drops
-llmjudge compare cases.jsonl --provider openai:gpt-5 --provider anthropic:claude-opus-4-8
-llmjudge report report.json --format html -o report.html
+llm-judge-kit eval cases.jsonl --provider openai:gpt-5 --rubric factuality --format md
+llm-judge-kit eval cases.jsonl --fail-under 0.9            # exit non-zero in CI if pass rate drops
+llm-judge-kit compare cases.jsonl --provider openai:gpt-5 --provider anthropic:claude-opus-4-8
+llm-judge-kit report report.json --format html -o report.html
 ```
 
 Same thing in code ([`examples/benchmark_report.py`](examples/benchmark_report.py)):
 
 ```python
-from llmjudge import Judge, load_dataset, run_benchmark, render_markdown
+from llm_judge_kit import Judge, load_dataset, run_benchmark, render_markdown
 
 cases = load_dataset("cases.jsonl")
 judge = Judge(provider="openai:gpt-5", rubric="factuality")
@@ -222,7 +222,7 @@ print(render_markdown(report))
 
 ```bash
 uv sync --all-extras
-uv run ruff check . && uv run ruff format --check . && uv run mypy src && uv run pytest --cov=llmjudge --cov-report=term-missing
+uv run ruff check . && uv run ruff format --check . && uv run mypy src && uv run pytest --cov=llm_judge_kit --cov-report=term-missing
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). The plan of record is in [ROADMAP.md](ROADMAP.md).

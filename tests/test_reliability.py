@@ -7,10 +7,10 @@ from typing import Any
 
 import pytest
 
-from llmjudge import MockProvider, RetryProvider
-from llmjudge.errors import ProviderError
-from llmjudge.providers.base import BaseProvider
-from llmjudge.types import ProviderResponse
+from llm_judge_kit import MockProvider, RetryProvider
+from llm_judge_kit.errors import ProviderError
+from llm_judge_kit.providers.base import BaseProvider
+from llm_judge_kit.types import ProviderResponse
 
 
 class _Flaky(BaseProvider):

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import json
 
-from llmjudge.parsing import extract_json
-from llmjudge.providers.mock import MockProvider
+from llm_judge_kit.parsing import extract_json
+from llm_judge_kit.providers.mock import MockProvider
 
 
 def test_deterministic_for_same_prompt() -> None:

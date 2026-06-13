@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import pytest
 
-from llmjudge import ConsensusJudge, Judge, MockProvider
-from llmjudge.errors import ConfigurationError
+from llm_judge_kit import ConsensusJudge, Judge, MockProvider
+from llm_judge_kit.errors import ConfigurationError
 
 
 def _judge(score: float) -> Judge:

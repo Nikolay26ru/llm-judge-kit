@@ -1,16 +1,16 @@
 """Ollama provider (local models over plain HTTP).
 
 Talks to a local Ollama server's ``/api/generate`` endpoint using ``httpx`` —
-no vendor SDK. Install the extra with ``pip install 'llmjudge[ollama]'``.
+no vendor SDK. Install the extra with ``pip install 'llm_judge_kit[ollama]'``.
 """
 
 from __future__ import annotations
 
 from typing import Any
 
-from llmjudge.errors import ProviderError
-from llmjudge.providers.base import BaseProvider
-from llmjudge.types import ProviderResponse
+from llm_judge_kit.errors import ProviderError
+from llm_judge_kit.providers.base import BaseProvider
+from llm_judge_kit.types import ProviderResponse
 
 _DEFAULT_MODEL = "llama3"
 _DEFAULT_HOST = "http://localhost:11434"
@@ -49,7 +49,7 @@ class OllamaProvider(BaseProvider):
                 import httpx
             except ImportError as exc:  # pragma: no cover - exercised via monkeypatch
                 raise ProviderError(
-                    "The 'ollama' provider needs httpx: pip install 'llmjudge[ollama]'."
+                    "The 'ollama' provider needs httpx: pip install 'llm_judge_kit[ollama]'."
                 ) from exc
             client = httpx
         self._client: Any = client

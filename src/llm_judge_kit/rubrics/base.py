@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from llmjudge.errors import RubricError
+from llm_judge_kit.errors import RubricError
 
 # Shared output contract appended to every rendered rubric. Keeping it in one
 # place means the parser and every rubric agree on the JSON shape.

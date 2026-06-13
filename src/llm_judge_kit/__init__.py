@@ -3,7 +3,7 @@
 The public API is intentionally tiny so downstream projects can depend on it
 without surprises. The headline primitive is :class:`Judge`::
 
-    from llmjudge import Judge
+    from llm_judge_kit import Judge
 
     judge = Judge(provider="mock", rubric="factuality")
     result = judge.score("What is the capital of France?", "Paris.")
@@ -14,13 +14,13 @@ See ``README.md`` for a runnable example.
 
 from __future__ import annotations
 
-from llmjudge._logging import enable_debug_logging, get_logger
-from llmjudge._version import __version__
-from llmjudge.benchmark import CaseResult, Report, run_benchmark
-from llmjudge.caching import CachingProvider
-from llmjudge.consensus import ConsensusJudge
-from llmjudge.dataset import Case, load_dataset
-from llmjudge.errors import (
+from llm_judge_kit._logging import enable_debug_logging, get_logger
+from llm_judge_kit._version import __version__
+from llm_judge_kit.benchmark import CaseResult, Report, run_benchmark
+from llm_judge_kit.caching import CachingProvider
+from llm_judge_kit.consensus import ConsensusJudge
+from llm_judge_kit.dataset import Case, load_dataset
+from llm_judge_kit.errors import (
     ConfigurationError,
     DatasetError,
     LLMJudgeError,
@@ -28,9 +28,9 @@ from llmjudge.errors import (
     ProviderError,
     RubricError,
 )
-from llmjudge.judge import Judge
-from llmjudge.parsing import extract_json
-from llmjudge.providers import (
+from llm_judge_kit.judge import Judge
+from llm_judge_kit.parsing import extract_json
+from llm_judge_kit.providers import (
     AnthropicProvider,
     BaseProvider,
     MockProvider,
@@ -41,20 +41,20 @@ from llmjudge.providers import (
     make_provider,
     register_provider,
 )
-from llmjudge.reliability import RetryProvider
-from llmjudge.reporting import (
+from llm_judge_kit.reliability import RetryProvider
+from llm_judge_kit.reporting import (
     load_report,
     render_html,
     render_json,
     render_markdown,
 )
-from llmjudge.rubrics import (
+from llm_judge_kit.rubrics import (
     Rubric,
     available_rubrics,
     get_rubric,
     register_rubric,
 )
-from llmjudge.types import JudgeResult, ProviderResponse
+from llm_judge_kit.types import JudgeResult, ProviderResponse
 
 __all__ = [
     "AnthropicProvider",

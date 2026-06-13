@@ -9,8 +9,8 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
-from llmjudge.errors import ConfigurationError
-from llmjudge.providers.base import Provider
+from llm_judge_kit.errors import ConfigurationError
+from llm_judge_kit.providers.base import Provider
 
 # A factory receives the model name (the part after ``scheme:``) or ``None``.
 ProviderFactory = Callable[[str | None], Provider]

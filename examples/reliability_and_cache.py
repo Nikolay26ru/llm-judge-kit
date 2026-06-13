@@ -3,7 +3,7 @@
 Both wrappers are themselves providers, so they nest around any backend.
 """
 
-from llmjudge import CachingProvider, Judge, MockProvider, RetryProvider
+from llm_judge_kit import CachingProvider, Judge, MockProvider, RetryProvider
 
 # RetryProvider adds retry-with-backoff + an optional timeout; CachingProvider
 # memoizes identical calls. Order: cache around retry around the real provider.

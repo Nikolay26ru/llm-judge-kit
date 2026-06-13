@@ -1,4 +1,4 @@
-"""Core data types for llmjudge.
+"""Core data types for llm_judge_kit.
 
 These are intentionally small, fully typed, and dependency-free so that any
 downstream project can import them without pulling in heavy transitive deps.

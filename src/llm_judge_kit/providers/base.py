@@ -1,7 +1,7 @@
 """Provider abstraction.
 
 A Provider is the only place that talks to an actual model. Everything else in
-llmjudge is provider-agnostic. To add a backend, implement ``complete()`` (and
+llm_judge_kit is provider-agnostic. To add a backend, implement ``complete()`` (and
 optionally subclass :class:`BaseProvider` for a stable ``name`` attribute).
 """
 
@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from llmjudge.types import ProviderResponse
+from llm_judge_kit.types import ProviderResponse
 
 
 @runtime_checkable

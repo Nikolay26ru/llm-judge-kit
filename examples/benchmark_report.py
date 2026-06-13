@@ -1,10 +1,10 @@
 """Benchmark a judge over an in-memory dataset and print a Markdown report.
 
 Deterministic with a mock. From the CLI this is:
-    llmjudge eval cases.jsonl --provider openai:gpt-5 --rubric factuality
+    llm-judge-kit eval cases.jsonl --provider openai:gpt-5 --rubric factuality
 """
 
-from llmjudge import Case, Judge, MockProvider, render_markdown, run_benchmark
+from llm_judge_kit import Case, Judge, MockProvider, render_markdown, run_benchmark
 
 cases = [
     Case(prompt="What is the capital of France?", response="Paris.", id="c1"),

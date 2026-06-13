@@ -446,7 +446,7 @@ wheels = [
 ]
 
 [[package]]
-name = "llmjudge"
+name = "llm-judge-kit"
 source = { editable = "." }
 
 [package.optional-dependencies]

@@ -13,14 +13,14 @@ from typing import Any
 
 import pytest
 
-from llmjudge import (
+from llm_judge_kit import (
     AnthropicProvider,
     Judge,
     OllamaProvider,
     OpenAIProvider,
 )
-from llmjudge.errors import ProviderError
-from llmjudge.providers.registry import available_providers, make_provider
+from llm_judge_kit.errors import ProviderError
+from llm_judge_kit.providers.registry import available_providers, make_provider
 
 # --- fake clients ---------------------------------------------------------
 
@@ -129,7 +129,7 @@ def test_openai_construction_via_spec(monkeypatch: pytest.MonkeyPatch) -> None:
 
 def test_openai_missing_sdk(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setitem(sys.modules, "openai", None)
-    with pytest.raises(ProviderError, match="llmjudge\\[openai\\]"):
+    with pytest.raises(ProviderError, match="llm_judge_kit\\[openai\\]"):
         OpenAIProvider()
 
 
@@ -174,7 +174,7 @@ def test_anthropic_construction_via_spec(monkeypatch: pytest.MonkeyPatch) -> Non
 
 def test_anthropic_missing_sdk(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setitem(sys.modules, "anthropic", None)
-    with pytest.raises(ProviderError, match="llmjudge\\[anthropic\\]"):
+    with pytest.raises(ProviderError, match="llm_judge_kit\\[anthropic\\]"):
         AnthropicProvider()
 
 
@@ -214,5 +214,5 @@ def test_ollama_construction_preserves_multi_colon_model() -> None:
 
 def test_ollama_missing_sdk(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setitem(sys.modules, "httpx", None)
-    with pytest.raises(ProviderError, match="llmjudge\\[ollama\\]"):
+    with pytest.raises(ProviderError, match="llm_judge_kit\\[ollama\\]"):
         OllamaProvider()

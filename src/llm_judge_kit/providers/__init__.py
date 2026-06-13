@@ -1,7 +1,7 @@
 """Provider backends and the provider registry.
 
 The deterministic :class:`MockProvider` is registered eagerly (it has no
-dependencies). Real providers are registered lazily so importing ``llmjudge``
+dependencies). Real providers are registered lazily so importing ``llm_judge_kit``
 never imports a heavy SDK or requires an optional extra to be installed; the
 SDK import happens only when that scheme is actually resolved and a client is
 built.
@@ -9,12 +9,12 @@ built.
 
 from __future__ import annotations
 
-from llmjudge.providers.anthropic import AnthropicProvider
-from llmjudge.providers.base import BaseProvider, Provider
-from llmjudge.providers.mock import MockProvider
-from llmjudge.providers.ollama import OllamaProvider
-from llmjudge.providers.openai import OpenAIProvider
-from llmjudge.providers.registry import (
+from llm_judge_kit.providers.anthropic import AnthropicProvider
+from llm_judge_kit.providers.base import BaseProvider, Provider
+from llm_judge_kit.providers.mock import MockProvider
+from llm_judge_kit.providers.ollama import OllamaProvider
+from llm_judge_kit.providers.openai import OpenAIProvider
+from llm_judge_kit.providers.registry import (
     ProviderFactory,
     available_providers,
     make_provider,

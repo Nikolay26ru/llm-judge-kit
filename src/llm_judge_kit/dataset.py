@@ -14,7 +14,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from llmjudge.errors import DatasetError
+from llm_judge_kit.errors import DatasetError
 
 _KNOWN_FIELDS = frozenset({"prompt", "response", "context", "reference", "id"})
 

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import pytest
 
-from llmjudge.errors import ParseError
-from llmjudge.parsing import extract_json
+from llm_judge_kit.errors import ParseError
+from llm_judge_kit.parsing import extract_json
 
 
 def test_clean_json() -> None:

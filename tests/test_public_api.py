@@ -5,22 +5,22 @@ from __future__ import annotations
 import subprocess
 import sys
 
-import llmjudge
+import llm_judge_kit
 
 
 def test_all_names_are_importable() -> None:
-    for name in llmjudge.__all__:
-        assert hasattr(llmjudge, name), f"{name} missing from llmjudge"
+    for name in llm_judge_kit.__all__:
+        assert hasattr(llm_judge_kit, name), f"{name} missing from llm_judge_kit"
 
 
 def test_version_is_sane() -> None:
-    assert isinstance(llmjudge.__version__, str)
-    assert llmjudge.__version__.count(".") >= 2
+    assert isinstance(llm_judge_kit.__version__, str)
+    assert llm_judge_kit.__version__.count(".") >= 2
 
 
 def test_headline_snippet_runs() -> None:
     # Mirrors the README / package docstring above-the-fold example.
-    from llmjudge import Judge, MockProvider
+    from llm_judge_kit import Judge, MockProvider
 
     judge = Judge(provider=MockProvider(fixed_score=0.9), rubric="factuality")
     result = judge.score("What is the capital of France?", "Paris.")
@@ -29,10 +29,10 @@ def test_headline_snippet_runs() -> None:
 
 
 def test_importing_core_pulls_in_no_provider_sdks() -> None:
-    # The wedge promise: `import llmjudge` must not drag in any provider SDK.
+    # The wedge promise: `import llm_judge_kit` must not drag in any provider SDK.
     # Checked in a fresh interpreter because other tests import them eagerly.
     probe = (
-        "import sys; import llmjudge; "
+        "import sys; import llm_judge_kit; "
         "leaked = sorted(m for m in ('openai', 'anthropic', 'httpx') if m in sys.modules); "
         "assert not leaked, leaked"
     )

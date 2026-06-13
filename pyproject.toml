@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "llmjudge"
+name = "llm-judge-kit"
 dynamic = ["version"]
 description = "Provider-agnostic, reproducible, typed LLM-as-a-judge — a small primitive you can depend on."
 readme = "README.md"
@@ -25,24 +25,24 @@ classifiers = [
     "Typing :: Typed",
 ]
 # The core "wedge" has ZERO required runtime dependencies on purpose: it must be
-# trivial for any downstream project to add `llmjudge` without dragging in a
+# trivial for any downstream project to add `llm_judge_kit` without dragging in a
 # transitive dependency tree. Real providers live behind optional extras (M2).
 dependencies = []
 
 [project.scripts]
-llmjudge = "llmjudge.cli:main"
+llm-judge-kit = "llm_judge_kit.cli:main"
 
 # Ships a pytest plugin inside this distribution (no separate package to
-# install or publish). It is a top-level module (not llmjudge.pytest_plugin) so
+# install or publish). It is a top-level module (not llm_judge_kit.pytest_plugin) so
 # pytest's bootstrap import doesn't pull in the whole library before coverage
-# starts. Auto-loaded by pytest when llmjudge is installed.
+# starts. Auto-loaded by pytest when llm_judge_kit is installed.
 [project.entry-points.pytest11]
-llmjudge = "pytest_llmjudge"
+llm_judge_kit = "pytest_llm_judge_kit"
 
 [project.urls]
-Homepage = "https://github.com/Nikolay26ru/llmjudge"
-Repository = "https://github.com/Nikolay26ru/llmjudge"
-Changelog = "https://github.com/Nikolay26ru/llmjudge/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/Nikolay26ru/llm-judge-kit"
+Repository = "https://github.com/Nikolay26ru/llm-judge-kit"
+Changelog = "https://github.com/Nikolay26ru/llm-judge-kit/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 openai = ["openai>=1.0"]
@@ -67,16 +67,16 @@ dev = [
 ]
 
 [tool.hatch.version]
-path = "src/llmjudge/_version.py"
+path = "src/llm_judge_kit/_version.py"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/llmjudge"]
+packages = ["src/llm_judge_kit"]
 
 [tool.hatch.build.targets.wheel.force-include]
-"src/pytest_llmjudge.py" = "pytest_llmjudge.py"
+"src/pytest_llm_judge_kit.py" = "pytest_llm_judge_kit.py"
 
 [tool.hatch.build.targets.sdist]
-include = ["src/llmjudge", "src/pytest_llmjudge.py", "README.md", "LICENSE", "CHANGELOG.md"]
+include = ["src/llm_judge_kit", "src/pytest_llm_judge_kit.py", "README.md", "LICENSE", "CHANGELOG.md"]
 
 [tool.ruff]
 line-length = 100
@@ -124,11 +124,11 @@ filterwarnings = ["error"]
 
 [tool.coverage.run]
 branch = true
-# Measures the core package only. The bundled `pytest_llmjudge` plugin module is
+# Measures the core package only. The bundled `pytest_llm_judge_kit` plugin module is
 # intentionally excluded: pytest auto-loads it during bootstrap, before pytest-cov
 # starts, so its module-level lines would always register as missed. It is a thin
 # adapter and is covered behaviorally by tests/test_pytest_plugin.py.
-source = ["llmjudge"]
+source = ["llm_judge_kit"]
 
 [tool.coverage.report]
 show_missing = true

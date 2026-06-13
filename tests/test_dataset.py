@@ -6,8 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from llmjudge import Case, load_dataset
-from llmjudge.errors import DatasetError
+from llm_judge_kit import Case, load_dataset
+from llm_judge_kit.errors import DatasetError
 
 
 def test_load_jsonl(tmp_path: Path) -> None:

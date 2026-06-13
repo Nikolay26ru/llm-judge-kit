@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from llmjudge import CachingProvider
-from llmjudge.providers.base import BaseProvider
-from llmjudge.types import ProviderResponse
+from llm_judge_kit import CachingProvider
+from llm_judge_kit.providers.base import BaseProvider
+from llm_judge_kit.types import ProviderResponse
 
 
 class _Counter(BaseProvider):

@@ -33,7 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     happens when a real client is built, with a clear error pointing at the
     extra to install.
   - Offline unit tests drive every provider through injected fake clients;
-    live API tests are gated behind `LLMJUDGE_LIVE_TESTS=1` (skipped by default).
+    live API tests are gated behind `LLM_JUDGE_KIT_LIVE_TESTS=1` (skipped by default).
 
 - **Consensus + reliability (M3):**
   - `ConsensusJudge` and `Judge.consensus([...], rubric=...)` — aggregate
@@ -43,21 +43,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     timeout wrapper (injectable sleep for deterministic tests).
   - `CachingProvider` — memoizes completions; key = hash of
     `version + provider + model + prompt + kwargs` (pluggable store).
-  - Structured logging on the `llmjudge` logger (ships a `NullHandler`;
+  - Structured logging on the `llm_judge_kit` logger (ships a `NullHandler`;
     `enable_debug_logging()` for local debugging).
   - Version moved to `_version.py` (single source; hatchling dynamic version).
 
 - **Adoption surface (M4):**
-  - Bundled pytest plugin (`pytest11` entry point → top-level `pytest_llmjudge`
-    module): the `llm_judge` fixture and `JudgeHelper.assert_passes` let you
+  - Bundled pytest plugin (`pytest11` entry point → top-level `pytest_llm_judge_kit`
+    module): the `llm_judge_kit` fixture and `JudgeHelper.assert_passes` let you
     write evals as ordinary pytest tests, with score/reason/violations in the
-    failure message. Choose the model with `--llmjudge-provider` or
-    `$LLMJUDGE_PROVIDER` (defaults to `mock`, so suites run offline).
+    failure message. Choose the model with `--llm-judge-kit-provider` or
+    `$LLM_JUDGE_KIT_PROVIDER` (defaults to `mock`, so suites run offline).
   - README "Integrations" section, including a framework-agnostic note (works
     with LangChain / LlamaIndex / any pipeline — it judges strings).
 
 - **Platform layer (M5):**
-  - `llmjudge` CLI (argparse, no new deps): `eval` (run a dataset → report,
+  - `llm_judge_kit` CLI (argparse, no new deps): `eval` (run a dataset → report,
     with `--fail-under` for CI gating), `compare` (several providers side by
     side), `report` (re-render a saved JSON report).
   - Dataset loader (`load_dataset`, `Case`) for `.jsonl`/`.ndjson`/`.json`.

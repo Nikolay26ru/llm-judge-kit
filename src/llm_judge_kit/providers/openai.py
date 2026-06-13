@@ -3,16 +3,16 @@
 Works with the official OpenAI API and any OpenAI-compatible endpoint via
 ``base_url`` (vLLM, Together, Groq, LM Studio, Ollama's OpenAI shim, ...).
 The ``openai`` SDK is imported lazily so the core stays dependency-free; install
-it with ``pip install 'llmjudge[openai]'``.
+it with ``pip install 'llm_judge_kit[openai]'``.
 """
 
 from __future__ import annotations
 
 from typing import Any
 
-from llmjudge.errors import ProviderError
-from llmjudge.providers.base import BaseProvider
-from llmjudge.types import ProviderResponse
+from llm_judge_kit.errors import ProviderError
+from llm_judge_kit.providers.base import BaseProvider
+from llm_judge_kit.types import ProviderResponse
 
 _DEFAULT_MODEL = "gpt-4o-mini"
 
@@ -50,7 +50,7 @@ class OpenAIProvider(BaseProvider):
             except ImportError as exc:  # pragma: no cover - exercised via monkeypatch
                 raise ProviderError(
                     "The 'openai' provider needs the openai package: "
-                    "pip install 'llmjudge[openai]'."
+                    "pip install 'llm_judge_kit[openai]'."
                 ) from exc
             client = openai.OpenAI(api_key=api_key, base_url=base_url)
         self._client: Any = client

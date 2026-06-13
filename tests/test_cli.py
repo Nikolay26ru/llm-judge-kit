@@ -1,4 +1,4 @@
-"""Tests for the llmjudge CLI."""
+"""Tests for the llm_judge_kit CLI."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from llmjudge.cli import main
+from llm_judge_kit.cli import main
 
 
 def _dataset(tmp_path: Path) -> Path:
