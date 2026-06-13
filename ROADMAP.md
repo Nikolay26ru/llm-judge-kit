@@ -99,12 +99,17 @@ stands. `LLMJudgeError` (published API) unchanged.
 - [x] Benchmark demo: shipped dataset + one command → MD/HTML report, reproduced in README
 - Reviewed by subagent: complete & correct, gate green (219 passed).
 
-### Block C — Launch drafts (LOCAL/gitignored; human sends)
-- [ ] `docs/launch/{show-hn,reddit,x-thread,blog,comparison}.md` — facts web-verified, `[VERIFY:]` where not
+### Block C — Launch drafts (LOCAL/gitignored; human sends) ✅
+- [x] `docs/launch/{show-hn,reddit,x-thread,blog,comparison}.md` — drafted; competitor
+      facts web-verified against repos/PyPI, `[VERIFY:]` left only on undecidable negatives
+      (e.g. "ships an offline judge stub?"). Honest tone, alpha status stated, no fabricated metrics.
 
-### Block D — Integrations & outreach
-- [ ] `examples/integrations/` runnable (offline/Mock, graceful skip) — LangChain, LlamaIndex, DSPy, raw
-- [ ] `docs/outreach/targets.md` (8–12 repos, web-verified) + ≥6 draft PR/issue docs (LOCAL/gitignored)
+### Block D — Integrations & outreach ✅
+- [x] `examples/integrations/` runnable (offline/Mock, graceful skip) — LangChain, LlamaIndex,
+      DSPy, raw — committed and exercised in CI via `tests/test_examples.py`
+- [x] `docs/outreach/targets.md` (8 verified targets + LOW/dropped tiers) + 7 tailored draft
+      PR/issue docs (LOCAL/gitignored). Every repo verified via GitHub API; stars read directly,
+      author disclosed, anti-spam stance documented.
 
 ## Decisions log (ambiguity resolutions)
 - Repo root at `~/llmjudge` (durable) rather than the session outputs path.
