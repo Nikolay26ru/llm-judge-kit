@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-06-14
+
 ### Added
 - CLI `--version` flag (`llm-judge-kit --version`).
 - Community health files: `SECURITY.md`, `CODE_OF_CONDUCT.md`, GitHub issue
@@ -19,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `examples/integrations/` — runnable integration examples for LangChain,
   LlamaIndex, DSPy, and a raw pipeline. Each runs offline (stub + `MockProvider`
   when the framework/LLM is absent) and is exercised in CI.
+- README "use it as a CI gate" recipe and a committed sample HTML report
+  (`docs/assets/sample-report.html`).
 
 ## [0.1.1] - 2026-06-14
 
