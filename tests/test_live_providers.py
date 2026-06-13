@@ -42,5 +42,12 @@ def test_anthropic_live() -> None:
 
 
 def test_ollama_live() -> None:
+    import httpx
+
+    host = os.environ.get("LLMJUDGE_OLLAMA_HOST", "http://localhost:11434")
+    try:
+        httpx.get(f"{host}/api/tags", timeout=1.0)
+    except Exception:
+        pytest.skip("Ollama server not reachable")
     model = os.environ.get("LLMJUDGE_OLLAMA_MODEL", "llama3")
     _check_unit_range(Judge(provider=f"ollama:{model}", rubric="factuality"))
