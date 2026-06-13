@@ -13,6 +13,8 @@ from llm_judge_kit.rubrics.base import (
     register_rubric,
 )
 from llm_judge_kit.rubrics.builtin import (
+    COHERENCE,
+    COMPLETENESS,
     FACTUALITY,
     GROUNDEDNESS,
     INSTRUCTION_FOLLOWING,
@@ -21,6 +23,8 @@ from llm_judge_kit.rubrics.builtin import (
 )
 
 __all__ = [
+    "COHERENCE",
+    "COMPLETENESS",
     "FACTUALITY",
     "GROUNDEDNESS",
     "INSTRUCTION_FOLLOWING",

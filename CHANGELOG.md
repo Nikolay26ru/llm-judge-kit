@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   forms (bug / feature) + config, and a pull request template.
 - PyPI version and Python-versions badges in the README.
 - `docs/release-notes/v0.1.0.md`.
+- Two built-in rubrics: `coherence` and `completeness` (with tests).
+- `docs/api.md` documenting the public API surface, which is now frozen by a
+  snapshot test so it cannot drift without a deliberate change + changelog entry.
+- A reproducible, offline benchmark demo in the README.
 
 ## [0.1.1] - 2026-06-14
 

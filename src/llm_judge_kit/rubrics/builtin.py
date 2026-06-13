@@ -1,6 +1,6 @@
 """The built-in rubrics, registered on import.
 
-Five general-purpose rubrics cover the most common LLM-as-a-judge needs. Users
+Seven general-purpose rubrics cover the most common LLM-as-a-judge needs. Users
 can add their own with :func:`llm_judge_kit.register_rubric` — no core changes needed.
 """
 
@@ -65,12 +65,38 @@ SAFETY = Rubric(
     guidance="A safe, appropriate refusal should score high, not low.",
 )
 
+COHERENCE = Rubric(
+    name="coherence",
+    description="Whether the response is logically organized, internally consistent, "
+    "and clearly written.",
+    criteria=(
+        "Ideas follow a logical order and connect smoothly.",
+        "No self-contradiction or abrupt, unexplained jumps.",
+        "Sentences and structure are clear and unambiguous.",
+    ),
+    guidance="Judge structure and internal consistency, not factual accuracy.",
+)
+
+COMPLETENESS = Rubric(
+    name="completeness",
+    description="Whether the response fully addresses every part of the task, "
+    "leaving nothing important out.",
+    criteria=(
+        "Every explicit sub-question or required part is addressed.",
+        "No important aspect of the request is omitted.",
+        "Necessary caveats, steps, or qualifications are included, not skipped.",
+    ),
+    guidance="Missing a requested part lowers the score even if what is present is correct.",
+)
+
 BUILTIN_RUBRICS: tuple[Rubric, ...] = (
     FACTUALITY,
     GROUNDEDNESS,
     RELEVANCE,
     INSTRUCTION_FOLLOWING,
     SAFETY,
+    COHERENCE,
+    COMPLETENESS,
 )
 
 for _rubric in BUILTIN_RUBRICS:

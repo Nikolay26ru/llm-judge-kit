@@ -13,6 +13,61 @@ def test_all_names_are_importable() -> None:
         assert hasattr(llm_judge_kit, name), f"{name} missing from llm_judge_kit"
 
 
+# Frozen public API surface. Changing this set is a deliberate, documented act:
+# update the set AND CHANGELOG.md, and bump the version for any removal/rename
+# (those break downstream code). This test catches accidental surface drift.
+_PUBLIC_API = frozenset(
+    {
+        "AnthropicProvider",
+        "BaseProvider",
+        "CachingProvider",
+        "Case",
+        "CaseResult",
+        "ConfigurationError",
+        "ConsensusJudge",
+        "DatasetError",
+        "Judge",
+        "JudgeResult",
+        "LLMJudgeError",
+        "MockProvider",
+        "OllamaProvider",
+        "OpenAIProvider",
+        "ParseError",
+        "Provider",
+        "ProviderError",
+        "ProviderResponse",
+        "Report",
+        "RetryProvider",
+        "Rubric",
+        "RubricError",
+        "__version__",
+        "available_providers",
+        "available_rubrics",
+        "enable_debug_logging",
+        "extract_json",
+        "get_logger",
+        "get_rubric",
+        "load_dataset",
+        "load_report",
+        "make_provider",
+        "register_provider",
+        "register_rubric",
+        "render_html",
+        "render_json",
+        "render_markdown",
+        "run_benchmark",
+    }
+)
+
+
+def test_public_api_surface_is_frozen() -> None:
+    current = set(llm_judge_kit.__all__)
+    added = current - _PUBLIC_API
+    removed = _PUBLIC_API - current
+    assert not added, f"public API grew: {sorted(added)} (update _PUBLIC_API + CHANGELOG)"
+    assert not removed, f"public API shrank: {sorted(removed)} (needs version bump + CHANGELOG)"
+
+
 def test_version_is_sane() -> None:
     assert isinstance(llm_judge_kit.__version__, str)
     assert llm_judge_kit.__version__.count(".") >= 2

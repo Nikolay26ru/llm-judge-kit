@@ -77,7 +77,7 @@ r.metadata         # provider, model, token usage, latency, cost
 ### Built-in rubrics
 
 `factuality`, `groundedness` (requires `context=`), `relevance`,
-`instruction_following`, `safety`. List them with
+`instruction_following`, `safety`, `coherence`, `completeness`. List them with
 `llm_judge_kit.available_rubrics()`.
 
 ```python
@@ -200,6 +200,29 @@ llm-judge-kit eval cases.jsonl --fail-under 0.9            # exit non-zero in CI
 llm-judge-kit compare cases.jsonl --provider openai:gpt-5 --provider anthropic:claude-opus-4-8
 llm-judge-kit report report.json --format html -o report.html
 ```
+
+Try it now — offline, on the shipped sample dataset (deterministic mock scores;
+point `--provider` at a real model for real verdicts):
+
+```console
+$ llm-judge-kit eval examples/sample_dataset.jsonl --rubric factuality --format md
+# LLMJudge Kit report
+
+- **provider:** mock
+- **rubric:** factuality
+- **threshold:** 0.50
+- **cases:** 3
+- **passed:** 1 (33.3%)
+- **mean score:** 0.596
+
+| # | id | score | result | reason |
+| --- | --- | ---: | :---: | --- |
+| 1 | fr-capital | 0.997 | PASS | Deterministic mock verdict. |
+| 2 | math | 0.349 | FAIL | Deterministic mock verdict. |
+| 3 | eiffel | 0.442 | FAIL | Deterministic mock verdict. |
+```
+
+Swap `--format html -o report.html` for a shareable, self-contained HTML report.
 
 Same thing in code ([`examples/benchmark_report.py`](examples/benchmark_report.py)):
 

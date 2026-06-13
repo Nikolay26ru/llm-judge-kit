@@ -20,9 +20,21 @@ def test_builtins_are_registered() -> None:
         "relevance",
         "instruction_following",
         "safety",
+        "coherence",
+        "completeness",
     ):
         assert name in available_rubrics()
         assert get_rubric(name).name == name
+
+
+def test_coherence_and_completeness_render_their_criteria() -> None:
+    for name in ("coherence", "completeness"):
+        rubric = get_rubric(name)
+        assert rubric.criteria, f"{name} should declare criteria"
+        rendered = rubric.render(prompt="p", response="r")
+        assert "Criteria:" in rendered
+        assert rubric.criteria[0] in rendered
+        assert rubric.requires_context is False
 
 
 def test_get_unknown_rubric_raises() -> None:
