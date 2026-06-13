@@ -77,6 +77,17 @@ def test_no_command_exits() -> None:
         main([])
 
 
+def test_version_flag(capsys: pytest.CaptureFixture[str]) -> None:
+    import llm_judge_kit
+
+    with pytest.raises(SystemExit) as exc:
+        main(["--version"])
+    assert exc.value.code == 0
+    out = capsys.readouterr().out
+    assert "llm-judge-kit" in out
+    assert llm_judge_kit.__version__ in out
+
+
 def test_output_to_missing_dir_returns_2(
     tmp_path: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:

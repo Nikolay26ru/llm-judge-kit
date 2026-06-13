@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Usage questions
+    url: https://github.com/Nikolay26ru/llm-judge-kit#readme
+    about: Please check the README and the examples/ directory first.
+  - name: Report a security vulnerability
+    url: https://github.com/Nikolay26ru/llm-judge-kit/security/advisories/new
+    about: Report security issues privately — please do not open a public issue.

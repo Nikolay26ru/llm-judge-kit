@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- CLI `--version` flag (`llm-judge-kit --version`).
+- Community health files: `SECURITY.md`, `CODE_OF_CONDUCT.md`, GitHub issue
+  forms (bug / feature) + config, and a pull request template.
+- PyPI version and Python-versions badges in the README.
+- `docs/release-notes/v0.1.0.md`.
+
 ## [0.1.1] - 2026-06-14
 
 ### Added

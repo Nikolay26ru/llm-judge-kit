@@ -2,10 +2,11 @@
 
 > Provider-agnostic, reproducible, typed **LLM-as-a-judge** — a small primitive you can depend on.
 
+[![PyPI](https://img.shields.io/pypi/v/llm-judge-kit)](https://pypi.org/project/llm-judge-kit/)
+[![Python versions](https://img.shields.io/pypi/pyversions/llm-judge-kit)](https://pypi.org/project/llm-judge-kit/)
 [![CI](https://github.com/Nikolay26ru/llm-judge-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/Nikolay26ru/llm-judge-kit/actions/workflows/ci.yml)
-[![Python](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![Typed](https://img.shields.io/badge/typed-mypy%20strict-blue)](https://mypy-lang.org/)
+[![Typed: mypy strict](https://img.shields.io/badge/typed-mypy%20strict-blue)](https://mypy-lang.org/)
 
 LLMJudge Kit is one tiny, well-tested module for scoring model outputs with an LLM
 judge — the part most projects re-implement badly. The core has **zero required

@@ -11,6 +11,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from llm_judge_kit._version import __version__
 from llm_judge_kit.benchmark import Report, run_benchmark
 from llm_judge_kit.dataset import load_dataset
 from llm_judge_kit.errors import LLMJudgeError
@@ -29,6 +30,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="llm-judge-kit", description="Provider-agnostic LLM-as-a-judge toolkit."
     )
+    parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     sub = parser.add_subparsers(dest="command", required=True)
 
     ev = sub.add_parser("eval", help="Judge a dataset and render a report.")

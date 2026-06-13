@@ -1,0 +1,36 @@
+name: Bug report
+description: Something isn't working as documented
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for the report! Please search existing issues first.
+  - type: input
+    id: version
+    attributes:
+      label: llm-judge-kit version
+      placeholder: "0.1.1  (output of: pip show llm-judge-kit)"
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      placeholder: "3.12"
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you expect to happen, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      description: A minimal snippet. Prefer MockProvider so it runs offline.
+      render: python
+    validations:
+      required: true
