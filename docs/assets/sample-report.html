@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LLMJudge Kit report</title>
+<style>
+body { font-family: system-ui, sans-serif; margin: 2rem; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #ddd; padding: 6px 10px; text-align: left; }
+th { background: #f4f1ea; }
+td.pass { color: #1a7f37; font-weight: 600; }
+td.fail { color: #b3261e; font-weight: 600; }
+</style>
+</head>
+<body>
+<h1>LLMJudge Kit report</h1>
+<p><strong>provider:</strong> mock &middot;
+<strong>rubric:</strong> factuality &middot;
+<strong>threshold:</strong> 0.50</p>
+<p><strong>1/3</strong> passed
+(33.3%) &middot; mean score 0.596</p>
+<table>
+<thead><tr><th>#</th><th>id</th><th>score</th><th>result</th><th>reason</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>fr-capital</td><td>0.997</td><td class="pass">PASS</td><td>Deterministic mock verdict.</td></tr>
+<tr><td>2</td><td>math</td><td>0.349</td><td class="fail">FAIL</td><td>Deterministic mock verdict.</td></tr>
+<tr><td>3</td><td>eiffel</td><td>0.442</td><td class="fail">FAIL</td><td>Deterministic mock verdict.</td></tr>
+</tbody>
+</table>
+</body>
+</html>

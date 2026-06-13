@@ -222,7 +222,8 @@ $ llm-judge-kit eval examples/sample_dataset.jsonl --rubric factuality --format 
 | 3 | eiffel | 0.442 | FAIL | Deterministic mock verdict. |
 ```
 
-Swap `--format html -o report.html` for a shareable, self-contained HTML report.
+Swap `--format html -o report.html` for a shareable, self-contained HTML report
+— here is a [generated sample](docs/assets/sample-report.html).
 
 Same thing in code ([`examples/benchmark_report.py`](examples/benchmark_report.py)):
 

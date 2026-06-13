@@ -96,7 +96,10 @@ stands. `LLMJudgeError` (published API) unchanged.
 - [x] Run every README/`examples/` snippet in a clean env (CI: `tests/test_examples.py`)
 - [x] New rubrics `coherence`, `completeness` (+ tests)
 - [x] pytest-plugin DX: failure shows score/reason/violations; example in `examples/test_with_pytest.py`
-- [x] Benchmark demo: shipped dataset + one command → MD/HTML report, reproduced in README
+- [x] Benchmark demo: shipped dataset + one command → MD report reproduced byte-for-byte in
+      README + a committed sample HTML report (`docs/assets/sample-report.html`). A literal PNG
+      screenshot is the only sub-step left to a human (open the HTML and capture) — no HTML→PNG
+      renderer is available here; the inline Markdown table is the in-README visual.
 - Reviewed by subagent: complete & correct, gate green (219 passed).
 
 ### Block C — Launch drafts (LOCAL/gitignored; human sends) ✅
