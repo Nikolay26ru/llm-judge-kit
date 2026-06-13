@@ -467,7 +467,10 @@ openai = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "anthropic" },
+    { name = "httpx" },
     { name = "mypy" },
+    { name = "openai" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "ruff" },
@@ -486,7 +489,10 @@ provides-extras = ["all", "anthropic", "ollama", "openai"]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "anthropic", specifier = ">=0.40" },
+    { name = "httpx", specifier = ">=0.27" },
     { name = "mypy", specifier = ">=1.13" },
+    { name = "openai", specifier = ">=1.0" },
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-cov", specifier = ">=5.0" },
     { name = "ruff", specifier = ">=0.10" },
