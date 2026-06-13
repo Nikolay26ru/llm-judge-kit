@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import html
 import json
+import math
 from pathlib import Path
 from typing import Any
 
@@ -49,7 +50,13 @@ def report_to_dict(report: Report) -> dict[str, Any]:
 
 
 def report_from_dict(data: dict[str, Any]) -> Report:
-    """Reconstruct a :class:`Report` from :func:`report_to_dict` output."""
+    """Reconstruct a :class:`Report` from :func:`report_to_dict` output.
+
+    Scores are validated and clamped to ``[0, 1]`` (same invariant the live
+    judge enforces), so a hand-edited or corrupted report can't smuggle in an
+    out-of-range or non-numeric score that would skew the stats or crash a
+    later render.
+    """
     try:
         rubric = data["rubric"]
         results = tuple(
@@ -62,15 +69,15 @@ def report_from_dict(data: dict[str, Any]) -> Report:
                     id=c.get("id"),
                 ),
                 result=JudgeResult(
-                    score=c["score"],
-                    confidence=c.get("confidence", 1.0),
+                    score=_load_score(c["score"], index),
+                    confidence=_load_confidence(c.get("confidence", 1.0)),
                     reason=c.get("reason", ""),
                     evidence=tuple(c.get("evidence", ())),
                     violations=tuple(c.get("violations", ())),
                     rubric=rubric,
                 ),
             )
-            for c in data["cases"]
+            for index, c in enumerate(data["cases"])
         )
         return Report(
             provider=data["provider"],
@@ -80,6 +87,18 @@ def report_from_dict(data: dict[str, Any]) -> Report:
         )
     except (KeyError, TypeError) as exc:
         raise DatasetError(f"malformed report: missing or invalid field {exc}") from exc
+
+
+def _load_score(value: Any, index: int) -> float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+        raise DatasetError(f"case {index}: 'score' must be a finite number, got {value!r}")
+    return max(0.0, min(1.0, float(value)))
+
+
+def _load_confidence(value: Any) -> float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+        return 1.0
+    return max(0.0, min(1.0, float(value)))
 
 
 def load_report(path: str | Path) -> Report:
@@ -106,8 +125,8 @@ def render_markdown(report: Report) -> str:
     lines = [
         "# LLMJudge report",
         "",
-        f"- **provider:** {report.provider}",
-        f"- **rubric:** {report.rubric}",
+        f"- **provider:** {_md_cell(report.provider)}",
+        f"- **rubric:** {_md_cell(report.rubric)}",
         f"- **threshold:** {report.threshold:.2f}",
         f"- **cases:** {report.count}",
         f"- **passed:** {report.passed} ({report.pass_rate:.1%})",
@@ -174,5 +193,5 @@ td.fail {{ color: #b3261e; font-weight: 600; }}
 
 
 def _md_cell(text: str) -> str:
-    """Make a string safe for a single Markdown table cell."""
-    return text.replace("|", "\\|").replace("\n", " ").strip()
+    """Make a string safe for a single Markdown table cell or list item."""
+    return text.replace("|", "\\|").replace("\r", " ").replace("\n", " ").strip()

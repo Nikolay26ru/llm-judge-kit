@@ -93,3 +93,15 @@ def test_missing_required_fields_raises(tmp_path: Path) -> None:
     path.write_text('{"prompt": "p"}\n')
     with pytest.raises(DatasetError, match="missing required"):
         load_dataset(path)
+
+
+@pytest.mark.parametrize(
+    "record",
+    ['{"prompt": null, "response": "r"}', '{"prompt": "p", "response": null}'],
+)
+def test_null_prompt_or_response_raises(tmp_path: Path, record: str) -> None:
+    # A present-but-null field must NOT be coerced to the string "None".
+    path = tmp_path / "cases.jsonl"
+    path.write_text(record + "\n")
+    with pytest.raises(DatasetError, match="missing required"):
+        load_dataset(path)

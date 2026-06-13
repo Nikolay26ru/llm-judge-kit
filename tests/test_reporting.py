@@ -18,7 +18,18 @@ from llmjudge import (
     run_benchmark,
 )
 from llmjudge.errors import DatasetError
-from llmjudge.reporting import report_to_dict
+from llmjudge.reporting import report_from_dict, report_to_dict
+
+
+def _report_dict(**case_overrides: object) -> dict[str, object]:
+    case = {"prompt": "p", "response": "r", "score": 0.5}
+    case.update(case_overrides)
+    return {
+        "provider": "mock",
+        "rubric": "relevance",
+        "threshold": 0.5,
+        "cases": [case],
+    }
 
 
 def _report(score: float = 0.7, *, text: str | None = None, rubric: str = "relevance"):
@@ -102,3 +113,30 @@ def test_load_report_malformed(tmp_path: Path) -> None:
     path.write_text('{"provider": "mock"}')  # missing rubric/threshold/cases
     with pytest.raises(DatasetError, match="malformed report"):
         load_report(path)
+
+
+def test_report_from_dict_clamps_out_of_range_score() -> None:
+    assert report_from_dict(_report_dict(score=5.0)).results[0].result.score == 1.0
+    assert report_from_dict(_report_dict(score=-2.0)).results[0].result.score == 0.0
+
+
+@pytest.mark.parametrize("bad", ["HIGH", None, True, [1], float("nan"), float("inf")])
+def test_report_from_dict_rejects_bad_score(bad: object) -> None:
+    with pytest.raises(DatasetError, match="'score' must be a finite number"):
+        report_from_dict(_report_dict(score=bad))
+
+
+def test_report_from_dict_defaults_bad_confidence() -> None:
+    report = report_from_dict(_report_dict(score=0.5, confidence="high"))
+    assert report.results[0].result.confidence == 1.0
+
+
+def test_markdown_escapes_summary_provider() -> None:
+    md = render_markdown(report_from_dict({**_report_dict(), "provider": "a\nb"}))
+    assert "- **provider:** a b" in md
+
+
+def test_markdown_neutralizes_carriage_return() -> None:
+    md = render_markdown(report_from_dict(_report_dict(score=0.5, reason="a\rb")))
+    assert "\r" not in md
+    assert "a b" in md

@@ -91,7 +91,9 @@ def _parse_json(text: str) -> list[Any]:
 def _to_case(record: Any, index: int) -> Case:
     if not isinstance(record, dict):
         raise DatasetError(f"record {index} is not a JSON object")
-    if "prompt" not in record or "response" not in record:
+    # Treat a missing OR null prompt/response as missing — coercing null to the
+    # literal string "None" would silently judge nonsense.
+    if record.get("prompt") is None or record.get("response") is None:
         raise DatasetError(f"record {index} is missing required 'prompt'/'response'")
     metadata = {k: v for k, v in record.items() if k not in _KNOWN_FIELDS}
     return Case(

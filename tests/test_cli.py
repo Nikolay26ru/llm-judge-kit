@@ -75,3 +75,20 @@ def test_error_returns_exit_code_2(tmp_path: Path, capsys: pytest.CaptureFixture
 def test_no_command_exits() -> None:
     with pytest.raises(SystemExit):
         main([])
+
+
+def test_output_to_missing_dir_returns_2(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    out = tmp_path / "nope" / "r.md"  # parent directory does not exist
+    code = main(["eval", str(_dataset(tmp_path)), "-o", str(out)])
+    assert code == 2
+    assert "error:" in capsys.readouterr().err
+
+
+def test_directory_as_dataset_returns_2(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    directory = tmp_path / "data.jsonl"  # a directory with a dataset-like suffix
+    directory.mkdir()
+    code = main(["eval", str(directory)])
+    assert code == 2
+    assert "error:" in capsys.readouterr().err

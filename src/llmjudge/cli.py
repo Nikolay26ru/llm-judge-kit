@@ -142,7 +142,9 @@ def main(argv: list[str] | None = None) -> int:
     command: Any = args.func
     try:
         return int(command(args))
-    except LLMJudgeError as exc:
+    except (LLMJudgeError, OSError) as exc:
+        # OSError covers foreseeable file mistakes: a missing -o directory, or
+        # pointing eval/report at a directory instead of a file.
         print(f"error: {exc}", file=sys.stderr)
         return 2
 
