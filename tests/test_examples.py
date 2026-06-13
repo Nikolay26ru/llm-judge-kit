@@ -18,11 +18,12 @@ def test_examples_directory_is_not_empty() -> None:
 
 @pytest.mark.parametrize("script", _EXAMPLES, ids=lambda p: p.name)
 def test_example_runs(script: Path) -> None:
-    result = subprocess.run(
-        [sys.executable, str(script)],
-        capture_output=True,
-        text=True,
-        timeout=60,
-        check=False,
-    )
-    assert result.returncode == 0, f"{script.name} failed:\n{result.stderr}"
+    # `test_*.py` examples demonstrate the pytest plugin, so they must be run
+    # *under pytest* (which loads the llm_judge_kit fixture) rather than as a
+    # plain script; the rest are standalone scripts. Either way: offline, exit 0.
+    if script.name.startswith("test_"):
+        cmd = [sys.executable, "-m", "pytest", str(script), "-q", "-p", "no:cacheprovider"]
+    else:
+        cmd = [sys.executable, str(script)]
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=60, check=False)
+    assert result.returncode == 0, f"{script.name} failed:\n{result.stdout}\n{result.stderr}"

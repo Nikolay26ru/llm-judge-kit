@@ -146,6 +146,8 @@ so tests are green until you point them at a real model:
 pytest --llm-judge-kit-provider "openai:gpt-5"      # or: export LLM_JUDGE_KIT_PROVIDER=...
 ```
 
+Runnable example: [`examples/test_with_pytest.py`](examples/test_with_pytest.py).
+
 ### Any framework
 
 LLMJudge judges *strings*, so it drops into any stack — LangChain, LlamaIndex,
