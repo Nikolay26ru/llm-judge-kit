@@ -81,13 +81,15 @@ Brand decision: keep **"LLMJudge Kit"** (display) + `llm-judge-kit` (dist) +
 as stale (written against the old `# LLMJudge`); the live, deliberate choice
 stands. `LLMJudgeError` (published API) unchanged.
 
-### Block A — Repo & release polish
-- [ ] PyPI version + downloads badges in README
-- [ ] `docs/release-notes/v0.1.0.md` (committed; the release itself already exists)
-- [ ] `SECURITY.md`, `CODE_OF_CONDUCT.md` (Contributor Covenant)
-- [ ] `.github/ISSUE_TEMPLATE/` (bug + feature + config) and `PULL_REQUEST_TEMPLATE.md`
-- [ ] CLI `--version` flag (+ test)
-- [ ] verify `py.typed` ships in the wheel; clean-venv install + `llm-judge-kit --version`
+### Block A — Repo & release polish ✅
+- [x] PyPI version + Python-versions badges in README (downloads badge skipped — a
+      fresh package shows ~0/month, which hurts the mature-OSS impression)
+- [x] `docs/release-notes/v0.1.0.md` (committed; the release itself already exists)
+- [x] `SECURITY.md`, `CODE_OF_CONDUCT.md` (Contributor Covenant, adopted by reference)
+- [x] `.github/ISSUE_TEMPLATE/` (bug + feature + config) and `PULL_REQUEST_TEMPLATE.md`
+- [x] CLI `--version` flag (+ test)
+- [x] verify `py.typed` ships in the wheel; clean-venv install + `llm-judge-kit --version` → ok
+- Reviewed by subagent: complete & correct, gate green (217 passed).
 
 ### Block B — Product depth & DX
 - [ ] Freeze + document the public API surface (`docs/api.md` + an `__all__` snapshot test)
