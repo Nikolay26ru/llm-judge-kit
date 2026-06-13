@@ -105,7 +105,11 @@ def pytest_addoption(parser: pytest.Parser) -> None:
     )
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def llm_judge(request: pytest.FixtureRequest) -> JudgeHelper:
-    """A :class:`JudgeHelper` bound to the configured provider."""
+    """A :class:`JudgeHelper` bound to the configured provider.
+
+    Session-scoped so the provider (and any underlying client) is built once for
+    the whole suite, not rebuilt per test.
+    """
     return JudgeHelper(_resolve_provider(request.config))

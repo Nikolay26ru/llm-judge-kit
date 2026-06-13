@@ -114,6 +114,10 @@ filterwarnings = ["error"]
 
 [tool.coverage.run]
 branch = true
+# Measures the core package only. The bundled `pytest_llmjudge` plugin module is
+# intentionally excluded: pytest auto-loads it during bootstrap, before pytest-cov
+# starts, so its module-level lines would always register as missed. It is a thin
+# adapter and is covered behaviorally by tests/test_pytest_plugin.py.
 source = ["llmjudge"]
 
 [tool.coverage.report]

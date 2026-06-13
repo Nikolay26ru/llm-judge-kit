@@ -75,3 +75,19 @@ def test_llm_judge_fixture_is_available(llm_judge: JudgeHelper) -> None:
     assert llm_judge.provider.name == "mock"
     result = llm_judge.assert_passes("2+2?", "4", rubric="relevance", threshold=0.0)
     assert isinstance(result, JudgeResult)
+
+
+# Session scope: the helper is built once per suite, not per test. Both tests
+# below see the same instance (set collapses to one id). Run alone, each still
+# passes (a single id is trivially unique-of-one).
+_fixture_ids: list[int] = []
+
+
+def test_fixture_is_session_scoped_a(llm_judge: JudgeHelper) -> None:
+    _fixture_ids.append(id(llm_judge))
+    assert len(set(_fixture_ids)) == 1
+
+
+def test_fixture_is_session_scoped_b(llm_judge: JudgeHelper) -> None:
+    _fixture_ids.append(id(llm_judge))
+    assert len(set(_fixture_ids)) == 1
