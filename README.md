@@ -91,7 +91,7 @@ Run several judge models and aggregate — `confidence` reflects how much they
 
 ```python
 judge = Judge.consensus(
-    ["openai:gpt-5", "anthropic:claude-opus-4.8", "ollama:llama3"],
+    ["openai:gpt-5", "anthropic:claude-opus-4-8", "ollama:llama3"],
     rubric="factuality",
 )
 result = judge.score(prompt, response)
@@ -194,7 +194,7 @@ JSON Lines (`prompt` + `response`, optional `context`/`reference`/`id`); see
 ```bash
 llmjudge eval cases.jsonl --provider openai:gpt-5 --rubric factuality --format md
 llmjudge eval cases.jsonl --fail-under 0.9            # exit non-zero in CI if pass rate drops
-llmjudge compare cases.jsonl --provider openai:gpt-5 --provider anthropic:claude-opus-4.8
+llmjudge compare cases.jsonl --provider openai:gpt-5 --provider anthropic:claude-opus-4-8
 llmjudge report report.json --format html -o report.html
 ```
 

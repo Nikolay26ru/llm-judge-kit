@@ -3,7 +3,7 @@
 Offline/deterministic with mocks. In production use real specs:
 
     judge = Judge.consensus(
-        ["openai:gpt-5", "anthropic:claude-opus-4.8"], rubric="factuality"
+        ["openai:gpt-5", "anthropic:claude-opus-4-8"], rubric="factuality"
     )
 """
 
